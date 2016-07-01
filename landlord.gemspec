@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Landlord::VERSION
   s.authors     = ["Jeremy Kratz"]
   s.email       = ["jwkratz@gmail.com"]
-  s.homepage    = "https://github.com/jwkratz/landlord"
-  s.summary     = "Rails engine for managing multi-tenant SaaS applications."
-  s.description = "Provides subdomain-scoped accounts, users, and billing."
+  s.homepage    = "TODO"
+  s.summary     = "TODO: Summary of Landlord."
+  s.description = "TODO: Description of Landlord."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
@@ -19,7 +19,4 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 5.0.0"
 
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "capybara"
-  s.add_development_dependency "factory_girl"
 end
