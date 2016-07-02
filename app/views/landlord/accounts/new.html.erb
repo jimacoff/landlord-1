@@ -16,6 +16,33 @@
     <%= f.text_field :name, class: 'form-control js-company-name', placeholder: 'Acme Inc', required: true %>
   </div>
 
+  <%= f.fields_for(:memberships) do |m| %>
+    <%= m.fields_for(:user) do |u| %>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= u.label :first_name, class: 'control-label' %>
+            <%= u.text_field :first_name, class: 'form-control', placeholder: 'Mary', required: true %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= u.label :last_name, class: 'control-label' %>
+            <%= u.text_field :last_name, class: 'form-control', placeholder: 'Smith', required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= u.label :email, class: 'control-label' %>
+        <%= u.email_field :email, class: 'form-control', placeholder: 'mary@example.com', required: true %>
+      </div>
+      <div class="form-group">
+        <%= u.label :password, class: 'control-label' %>
+        <%= u.password_field :password, class: 'form-control', placeholder: 'Easy to remember', required: true %>
+      </div>
+    <% end %>
+  <% end %>
+
   <div class="form-group">
     <%= f.submit 'Start my trial', class: 'btn btn-primary' %>
   </div>

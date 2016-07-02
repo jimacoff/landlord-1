@@ -5,6 +5,8 @@ module Landlord
 
     def new
       @account = Account.new
+      @account.memberships.build.build_user
+      @current_user = current_user
     end
 
     def create
@@ -28,7 +30,7 @@ module Landlord
     private
 
       def account_params
-        params.require(:account).permit(:name)
+        params.require(:account).permit(:name, memberships_attributes: [ user_attributes: [ :first_name, :last_name, :email, :password ] ])
       end
 
   end

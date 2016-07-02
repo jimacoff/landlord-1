@@ -1,1 +1,7 @@
 <p><%= @account.name %> dashboard</p>
+<p>Users:</p>
+<ul>
+  <% @account.users.each do |user| %>
+    <li><%= user.first_name %> <%= user.last_name %></li>
+  <% end %>
+</ul>
