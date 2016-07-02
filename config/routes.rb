@@ -1,3 +1,6 @@
 Landlord::Engine.routes.draw do
-  resources :accounts
+  root 'accounts#new'
+  resources :accounts, :path => '/' do
+    get 'dashboard' => 'dashboard#index'
+  end
 end

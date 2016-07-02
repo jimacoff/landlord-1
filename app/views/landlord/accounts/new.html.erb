@@ -1,0 +1,22 @@
+<% if @account.errors.any? %>
+  <div class="error-list">
+    <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+    <ul>
+    <% @account.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@account) do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "Company Name", class: 'control-label' %>
+    <%= f.text_field :name, class: 'form-control js-company-name', placeholder: 'Acme Inc', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Start my trial', class: 'btn btn-primary' %>
+  </div>
+<% end %>

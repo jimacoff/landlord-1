@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount Landlord::Engine => "/landlord"
+  mount Landlord::Engine => "/"
 end
