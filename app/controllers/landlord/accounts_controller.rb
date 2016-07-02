@@ -12,13 +12,17 @@ module Landlord
 
       respond_to do |format|
         if @account.save
-          format.html { redirect_to account_dashboard_path @account, notice: 'Account was successfully created.' }
+          format.html { redirect_to @account, notice: 'Account was successfully created.' }
           format.json { render :show, status: :created, location: @account }
         else
           format.html { render :new }
           format.json { render json: @account.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    def show
+      @account = Account.find_by(id: params[:id])
     end
 
     private
