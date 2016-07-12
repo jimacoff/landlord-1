@@ -2,6 +2,7 @@ require_dependency "landlord/application_controller"
 
 module Landlord
   class AccountsController < ApplicationController
+    before_action :authenticate_user!, only: [:show]
 
     def new
       @account = Account.new
