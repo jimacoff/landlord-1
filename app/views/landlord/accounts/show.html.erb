@@ -2,6 +2,9 @@
 <p>Users:</p>
 <ul>
   <% @account.users.each do |user| %>
-    <li><%= user.first_name %> <%= user.last_name %></li>
+    <li>
+      <% if @account.owner == user %>(Owner)<% end %>
+      <%= user.first_name %> <%= user.last_name %>
+    </li>
   <% end %>
 </ul>

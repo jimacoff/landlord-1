@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160702201432) do
+ActiveRecord::Schema.define(version: 20160712015749) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20160702201432) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean  "is_owner"
     t.index ["account_id"], name: "index_landlord_memberships_on_account_id"
     t.index ["user_id"], name: "index_landlord_memberships_on_user_id"
   end
