@@ -7,6 +7,7 @@ module Landlord
     def new
       @account = Account.new
       @account.memberships.build.build_user
+      @plans = Plan.all
       @current_user = current_user
     end
 
@@ -18,6 +19,7 @@ module Landlord
           format.html { redirect_to @account, notice: 'Account was successfully created.' }
           format.json { render :show, status: :created, location: @account }
         else
+          @plans = Plan.all
           format.html { render :new }
           format.json { render json: @account.errors, status: :unprocessable_entity }
         end
@@ -31,7 +33,7 @@ module Landlord
     private
 
       def account_params
-        params.require(:account).permit(:name, memberships_attributes: [ user_attributes: [ :first_name, :last_name, :email, :password ] ])
+        params.require(:account).permit(:name, :plan_id, memberships_attributes: [ user_attributes: [ :first_name, :last_name, :email, :password ] ])
       end
 
   end

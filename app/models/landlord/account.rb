@@ -1,5 +1,6 @@
 module Landlord
   class Account < ApplicationRecord
+    belongs_to :plan
     has_many :users
     has_many :memberships, inverse_of: :account
     has_many :users, through: :memberships
@@ -7,6 +8,7 @@ module Landlord
     accepts_nested_attributes_for :memberships
 
     validates :name, presence: true
+    validates :plan, presence: true
 
     before_validation :init_owner, only: :create
 

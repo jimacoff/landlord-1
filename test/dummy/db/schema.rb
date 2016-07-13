@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160713020416) do
+ActiveRecord::Schema.define(version: 20160713021717) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "plan_id"
+    t.index ["plan_id"], name: "index_landlord_accounts_on_plan_id"
   end
 
   create_table "landlord_memberships", force: :cascade do |t|

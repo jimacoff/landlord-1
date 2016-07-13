@@ -16,6 +16,11 @@
     <%= f.text_field :name, class: 'form-control js-company-name', placeholder: 'Acme Inc', required: true %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :plan_id, "Plan", class: 'control-label' %>
+    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+  </div>
+
   <%= f.fields_for(:memberships) do |m| %>
     <%= m.fields_for(:user) do |u| %>
       <div class="row">
