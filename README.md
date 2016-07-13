@@ -13,12 +13,15 @@ gem 'landlord'
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
+$ bundle exec figaro install
 ```
 
-Or install it yourself as:
+Add your Stripe API keys to `config/application.yml`
+
+Then execute:
 ```bash
-$ gem install landlord
+$ rails landlord:import_plans
 ```
 
 ## Contributing
