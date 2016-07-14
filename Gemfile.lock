@@ -49,6 +49,7 @@ GEM
     arel (7.0.0)
     bcrypt (3.1.11-x86-mingw32)
     builder (3.2.2)
+    byebug (9.0.5)
     concurrent-ruby (1.0.2)
     devise (4.2.0)
       bcrypt (~> 3.0)
@@ -147,6 +148,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  byebug
   figaro
   landlord!
   sqlite3

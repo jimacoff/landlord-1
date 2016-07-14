@@ -2,7 +2,15 @@ require_dependency "landlord/application_controller"
 
 module Landlord
   class AccountsController < ApplicationController
-    before_action :authenticate_user!, only: [:show]
+    before_action :authenticate_user!, only: [:index, :show]
+
+    # List the logged-in user's accounts
+    def index
+      @accounts = current_user.accounts.not_canceled
+      if @accounts.size == 1
+        redirect_to account_path @accounts.first
+      end
+    end
 
     def new
       @account = Account.new
