@@ -9,6 +9,33 @@
   </head>
 
   <body>
+    <p class="left">
+      <strong>Dummy App</strong>
+      <% if current_account %>
+        &raquo; <%= link_to(current_account.name, landlord.account_path(current_account)) %>
+      <% end %>
+    </p>
+
+    <% if current_user %>
+      <p class="right">
+        <%= current_user.email %> |
+        <%= link_to('Your accounts', landlord.authenticated_root_path) %> |
+        <% if current_account %>
+          <%= link_to('Account settings', landlord.account_settings_path(current_account)) %> |
+        <% end %>
+        <%= link_to('Sign out', destroy_user_session_path) %>
+      </p>
+    <% else %>
+      <p class="right">
+        <%= link_to('Sign in', landlord.destroy_user_session_path) %> |
+        <%= link_to('Try it free', landlord.new_account_path) %>
+      </p>
+    <% end %>
+
+    <hr class="clear" />
+
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
 </html>

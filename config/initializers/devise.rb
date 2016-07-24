@@ -269,7 +269,7 @@ Devise.setup do |config|
   #
   # The router that invoked `devise_for`, in the example above, would be:
   config.router_name = :landlord
-  # config.parent_controller = 'Landlord::ApplicationController'
+  config.parent_controller = 'Landlord::ApplicationController'
   
   #
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
