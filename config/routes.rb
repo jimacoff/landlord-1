@@ -17,6 +17,7 @@ Landlord::Engine.routes.draw do
   resources :accounts, :path => '/' do
     # Account-scoped controllers go here
     get 'settings' => 'accounts/settings#index', as: 'settings'
+    patch 'settings' => 'accounts/settings#update', as: 'settings_update'
   end
 
 end

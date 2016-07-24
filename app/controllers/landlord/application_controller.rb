@@ -40,6 +40,12 @@ module Landlord
 
     helper_method :require_active_account
 
+    def require_owner
+      if !@current_membership.is_owner
+        redirect_to account_path(@current_account)
+      end
+    end
+
     private
 
       def get_current_account_and_membership

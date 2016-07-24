@@ -1,2 +1,30 @@
 <h1>Account Settings</h1>
 <p>Name, plan, billing, invoices, usage, users, cancellation</p>
+
+<% if @current_account.errors.any? %>
+  <div class="error-list">
+    <h2><%= pluralize(@current_account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+    <ul>
+    <% @current_account.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for(@current_account, url:account_settings_update_path) do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "Company Name", class: 'control-label' %>
+    <%= f.text_field :name, class: 'form-control js-company-name', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :plan_id, "Plan", class: 'control-label' %>
+    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+  </div>
+<% end %>
