@@ -7,6 +7,5 @@ module Landlord
 
     validates :account, presence: true
     validates :user, presence: true, uniqueness: { scope: :account, message: 'already belongs to Account' }
-    validates :is_owner, presence: true
   end
 end
