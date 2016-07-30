@@ -1,0 +1,93 @@
+<h1>Billing</h1>
+
+<% if @has_billing_info %>
+  <ul>
+    <li><strong>Current card:</strong> <%= @current_account.card_name %> <%= @current_account.card_brand %> **** **** **** <%= @current_account.card_last4 %></li>
+    <li><strong>Expires:</strong> <%= @current_account.card_exp_month %>/<%= @current_account.card_exp_year %></li>
+  </ul>
+  <hr />
+<% end %>
+
+<%= form_for @current_account, url: url_for(controller: 'accounts/billing', action: 'update'), html: { id: 'payment-form' } do |f| %>
+  <div id="stripe-error" class="alert alert-danger hidden"></div>
+
+  <input type="hidden" name="plan_id" value="<%= @current_account.plan.stripe_id %>" />
+  <input type="hidden" name="email_address" value="<%= @current_account.owner.email %>" />
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <%= label_tag 'name', 'Name on card' %>
+        <%= text_field_tag 'name', nil, class: 'form-control', placeholder: 'John Doe', data: { stripe: 'name' } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <%= label_tag 'number', 'Card number' %>
+        <%= text_field_tag 'number', nil, size: 20, class: 'form-control', placeholder: '1234 1234 1234 1234', data: { stripe: 'number' } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <div class="form-group">
+        <%= label_tag 'cvc', 'CVC' %>
+        <%= text_field_tag 'cvc', nil, size: 4, class: 'form-control', placeholder: '123', data: { stripe: 'cvc' } %>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="form-group">
+        <%= label_tag 'exp_month', 'Expiration' %>
+        <div class="form-inline">
+          <%= text_field_tag 'exp_month', nil, size: 2, class: 'form-control', placeholder: 'MM', data: { stripe: 'exp-month' } %>
+          <%= text_field_tag 'exp_year', nil, size: 4, class: 'form-control', placeholder: 'YYYY', data: { stripe: 'exp-year' } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Update credit card', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  $(function() {
+    Stripe.setPublishableKey('<%= Rails.configuration.stripe[:publishable_key] %>');
+
+    jQuery(function($) {
+      $('#payment-form').submit(function(event) {
+        var $form = $(this);
+        $form.find('.btn-primary').prop('disabled', true);
+        Stripe.card.createToken($form, stripeResponseHandler);
+        return false;
+      });
+    });
+
+    function stripeResponseHandler(status, response) {
+      var $form = $('#payment-form');
+      $('#stripe-error').addClass('hidden');
+
+      if (response.error) {
+        // Show the errors on the form
+        $('#stripe-error').text(response.error.message).removeClass('hidden');
+        $form.find('.btn-primary').prop('disabled', false);
+      } else {
+        // add the Stripe response data as hidden fields (this ensures we save everything exactly as it is in Stripe)
+        $form.append($('<input type="hidden" name="stripe_token" />').val(response.id));
+        $form.append($('<input type="hidden" name="stripe_card_name" />').val(response.card.name));
+        $form.append($('<input type="hidden" name="stripe_card_brand" />').val(response.card.brand));
+        $form.append($('<input type="hidden" name="stripe_card_last4" />').val(response.card.last4));
+        $form.append($('<input type="hidden" name="stripe_card_exp_month" />').val(response.card.exp_month));
+        $form.append($('<input type="hidden" name="stripe_card_exp_year" />').val(response.card.exp_year));
+        // and submit
+        $form.get(0).submit();
+      }
+    };
+  });
+</script>
