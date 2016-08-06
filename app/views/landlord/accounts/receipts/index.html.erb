@@ -1,2 +1,6 @@
-<h1>Accounts::Receipts#index</h1>
-<p>Find me in app/views/landlord/accounts/receipts/index.html.erb</p>
+<h1>Account receipts:</h1>
+<ul>
+  <% @receipts.each do |receipt| %>
+    <li><%= link_to(receipt.charged_at, account_receipt_path(@current_account, receipt)) %></li>
+  <% end %>
+</ul>

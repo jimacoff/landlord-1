@@ -8,8 +8,15 @@ module Landlord
     #
     def succeeded(receipt)
       @receipt = receipt
-      email = receipt.account.owner.email
-      mail(to: email, subject: 'Charge Succeeded')
+      account = receipt.account
+      email = account.owner.email
+      cc = nil
+
+      if (account.billing_info)
+        cc = account.billing_info.cc_emails
+      end
+
+      mail(to: email, subject: 'Charge Succeeded', cc: cc)
     end
 
     # Subject can be set in your I18n file at config/locales/en.yml
@@ -19,8 +26,11 @@ module Landlord
     #
     def failed(receipt)
       @receipt = receipt
-      email = receipt.account.owner.email
-      mail(to: email, subject: 'Charge Failed')
+      account = receipt.account
+      email = account.owner.email
+      cc = nil
+
+      mail(to: email, subject: 'Charge Failed', cc: cc)
     end
 
     # Subject can be set in your I18n file at config/locales/en.yml
@@ -30,8 +40,11 @@ module Landlord
     #
     def refunded(receipt)
       @receipt = receipt
-      email = receipt.account.owner.email
-      mail(to: email, subject: 'Charge Refunded')
+      account = receipt.account
+      email = account.owner.email
+      cc = nil
+      
+      mail(to: email, subject: 'Charge Refunded', cc: cc)
     end
   end
 end

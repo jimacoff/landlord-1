@@ -5,6 +5,7 @@ module Landlord
     has_many :memberships, inverse_of: :account
     has_many :users, through: :memberships
     has_many :receipts
+    has_one :billing_info
 
     accepts_nested_attributes_for :memberships
 
