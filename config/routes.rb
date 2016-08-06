@@ -12,7 +12,7 @@ Landlord::Engine.routes.draw do
   get '/new/success', to: 'accounts#success', as: 'new_account_success'
 
   # Load Devise routes inside Landlord engine
-  devise_for :users, class_name: "Landlord::User", module: :devise, controllers: { invitations: 'devise/invitations' }
+  devise_for :users, class_name: "Landlord::User", module: :devise, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
   # Load StripeEvent route for Stripe webhooks
   post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'

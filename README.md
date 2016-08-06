@@ -17,6 +17,8 @@ $ bundle install
 $ bundle exec figaro install
 ```
 
+Setup Google OAuth2: https://github.com/zquestz/omniauth-google-oauth2
+Add your Google API keys to `config/application.yml`
 Add your Stripe API keys to `config/application.yml`
 
 Then execute:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160806184529) do
+ActiveRecord::Schema.define(version: 20160806210634) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 20160806184529) do
     t.string   "invited_by_type"
     t.integer  "invited_by_id"
     t.integer  "invitations_count",      default: 0
+    t.string   "provider"
+    t.string   "uid"
     t.index ["confirmation_token"], name: "index_landlord_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_landlord_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_landlord_users_on_invitation_token", unique: true

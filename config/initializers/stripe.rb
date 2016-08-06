@@ -4,9 +4,9 @@ require 'landlord'
 # Initialize Stripe and StripeEvent gems
 
 Rails.configuration.stripe = {
-  publishable_key: ENV['stripe_publishable_key'],
-  secret_key:      ENV['stripe_api_key'],
-  webhook_secret:  ENV['stripe_webhook_secret'],
+  publishable_key: ENV['stripe_publishable_key'], # Get this from Stripe dashboard
+  secret_key:      ENV['stripe_api_key'],         # Get this from Stripe dashboard
+  webhook_secret:  ENV['stripe_webhook_secret'],  # Define this in app, then include in webhook URL (Stripe dashboard)
 }
 
 Stripe.api_key = Rails.configuration.stripe[:secret_key]
