@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "devise"
   s.add_dependency "devise_invitable"
   s.add_dependency "stripe"
+  s.add_dependency "stripe_event"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "byebug"

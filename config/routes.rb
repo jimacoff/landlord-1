@@ -14,6 +14,9 @@ Landlord::Engine.routes.draw do
   # Load Devise routes inside Landlord engine
   devise_for :users, class_name: "Landlord::User", module: :devise, controllers: { invitations: 'devise/invitations' }
 
+  # Load StripeEvent route for Stripe webhooks
+  post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
+
   resources :accounts, :path => '/' do
     # Account-scoped controllers go in here
 
