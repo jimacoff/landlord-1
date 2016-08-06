@@ -1,5 +1,13 @@
 Landlord::Engine.routes.draw do
 
+  namespace :accounts do
+    get 'receipts/index'
+  end
+
+  namespace :accounts do
+    get 'receipts/show'
+  end
+
   # Root - Show authenticated users their list of accounts
   authenticated :user do
     root 'accounts#index', as: :authenticated_root

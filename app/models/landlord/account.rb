@@ -4,6 +4,7 @@ module Landlord
     has_many :users
     has_many :memberships, inverse_of: :account
     has_many :users, through: :memberships
+    has_many :receipts
 
     accepts_nested_attributes_for :memberships
 
@@ -41,7 +42,7 @@ module Landlord
       account = Account.find_by(stripe_id: customer.id)
 
       if !account
-        DevOpsMailer.devops('Stripe event error', 'customer contains Account that does not exist: ' + event.id).deliver_later
+        SupportMailer.message('Stripe event error', 'customer contains Account that does not exist: ' + event.id).deliver_later
       else
         account.update_card_from_stripe(card)
       end
@@ -55,7 +56,7 @@ module Landlord
 
       if (customer.default_source == card.id)
         if !account
-          DevOpsMailer.devops('Stripe event error', 'customer.card contains Account that does not exist: ' + event.id).deliver_later
+          SupportMailer.message('Stripe event error', 'customer.card contains Account that does not exist: ' + event.id).deliver_later
         else
           account.update_card_from_stripe(card)
         end
@@ -69,10 +70,10 @@ module Landlord
       account = Account.find_by(stripe_id: subscription.customer)
 
       if !account
-        DevOpsMailer.devops('Stripe event error', 'customer.subscription contains Account that does not exist: ' + event.id).deliver_later
+        SupportMailer.message('Stripe event error', 'customer.subscription contains Account that does not exist: ' + event.id).deliver_later
       end
       if customer.subscriptions.count > 1
-        DevOpsMailer.devops('Stripe event error', 'customer has multiple subscriptions: ' + event.id).deliver_later
+        SupportMailer.message('Stripe event error', 'customer has multiple subscriptions: ' + event.id).deliver_later
       end
 
       if account
@@ -87,7 +88,7 @@ module Landlord
         # Update the account plan if it has changed in Stripe
         new_plan = Plan.find_by(stripe_id: subscription.plan.id)
         if !new_plan
-          DevOpsMailer.devops('Stripe event error', 'customer.subscription contains Plan that does not exist: ' + event.id).deliver_later
+          SupportMailer.message('Stripe event error', 'customer.subscription contains Plan that does not exist: ' + event.id).deliver_later
         else
           if account.plan != new_plan
             account.plan = new_plan

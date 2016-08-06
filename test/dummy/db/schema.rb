@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160730170001) do
+ActiveRecord::Schema.define(version: 20160806174223) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -50,6 +50,28 @@ ActiveRecord::Schema.define(version: 20160730170001) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.index ["stripe_id"], name: "index_landlord_plans_on_stripe_id"
+  end
+
+  create_table "landlord_receipts", force: :cascade do |t|
+    t.string   "stripe_id",       null: false
+    t.integer  "account_id",      null: false
+    t.integer  "amount"
+    t.integer  "amount_refunded"
+    t.boolean  "captured"
+    t.string   "card_brand"
+    t.string   "card_last4"
+    t.datetime "charged_at"
+    t.string   "currency"
+    t.string   "description"
+    t.string   "failure_message"
+    t.string   "failure_code"
+    t.boolean  "paid"
+    t.boolean  "refunded"
+    t.string   "status"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["account_id"], name: "index_landlord_receipts_on_account_id"
+    t.index ["stripe_id"], name: "index_landlord_receipts_on_stripe_id"
   end
 
   create_table "landlord_stripe_webhooks", force: :cascade do |t|

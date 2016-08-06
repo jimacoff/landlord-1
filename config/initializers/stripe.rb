@@ -60,7 +60,7 @@ StripeEvent.configure do |events|
     charge = event.data.object
     receipt = Landlord::Receipt.save_from_stripe(charge)
     if receipt
-      Landlord::ReceiptMailer.receipt(receipt).deliver_later
+      Landlord::ReceiptMailer.succeeded(receipt).deliver_later
     end
   end
 
@@ -69,7 +69,7 @@ StripeEvent.configure do |events|
     charge = event.data.object
     receipt = Landlord::Receipt.save_from_stripe(charge)
     if receipt
-      Landlord::ReceiptMailer.charge_failed(receipt).deliver_later
+      Landlord::ReceiptMailer.failed(receipt).deliver_later
     end
   end
 
@@ -78,13 +78,13 @@ StripeEvent.configure do |events|
     charge = event.data.object
     receipt = Landlord::Receipt.save_from_stripe(charge)
     if receipt
-      Landlord::ReceiptMailer.receipt(receipt).deliver_later
+      Landlord::ReceiptMailer.refunded(receipt).deliver_later
     end
   end
 
   # Occurs whenever a customer disputes a charge with their bank (chargeback).
   events.subscribe 'charge.dispute.created' do |event|
-    Landlord::DevOpsMailer.devops('Stripe dispute', 'charge.dispute.created: ' + event.id).deliver_later
+    Landlord::SupportMailer.message('Stripe dispute', 'charge.dispute.created: ' + event.id).deliver_later
   end
 
 end

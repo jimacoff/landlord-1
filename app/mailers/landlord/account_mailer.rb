@@ -16,5 +16,49 @@ module Landlord
       @url = account_url(account)
       mail(to: @email, subject: "Welcome to your account!")
     end
+
+    # Subject can be set in your I18n file at config/locales/en.yml
+    # with the following lookup:
+    #
+    #   en.account_mailer.trial_will_end.subject
+    #
+    def trial_will_end(account)
+      @greeting = "Hi"
+
+      mail(to: account.owner.email, subject: "Trial Will End")
+    end
+
+    # Subject can be set in your I18n file at config/locales/en.yml
+    # with the following lookup:
+    #
+    #   en.account_mailer.past_due.subject
+    #
+    def past_due(account)
+      @greeting = "Hi"
+
+      mail(to: account.owner.email, subject: "Past Due")
+    end
+
+    # Subject can be set in your I18n file at config/locales/en.yml
+    # with the following lookup:
+    #
+    #   en.account_mailer.canceled.subject
+    #
+    def canceled(account)
+      @greeting = "Hi"
+
+      mail(to: account.owner.email, subject: "Canceled")
+    end
+
+    # Subject can be set in your I18n file at config/locales/en.yml
+    # with the following lookup:
+    #
+    #   en.account_mailer.unpaid.subject
+    #
+    def unpaid(account)
+      @greeting = "Hi"
+
+      mail(to: account.owner.email, subject: "Unpaid")
+    end
   end
 end
