@@ -12,7 +12,7 @@ module Landlord
       email_array = user_params.split("\r\n")
       email_array.each do |email|
         u = User.invite!(email: email)
-        m = u.memberships.new(account: @current_account, is_owner: false)
+        m = u.memberships.new(account: @current_account, role: :normal)
         m.save
       end
     end

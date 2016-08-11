@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160806210634) do
+ActiveRecord::Schema.define(version: 20160811011837) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -40,9 +40,9 @@ ActiveRecord::Schema.define(version: 20160806210634) do
   create_table "landlord_memberships", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "is_owner"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "role",       default: 0
     t.index ["account_id"], name: "index_landlord_memberships_on_account_id"
     t.index ["user_id"], name: "index_landlord_memberships_on_user_id"
   end

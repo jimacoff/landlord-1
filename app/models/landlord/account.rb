@@ -24,7 +24,7 @@ module Landlord
 
     # Return the user who is the account owner
     def owner
-      self.memberships.find_by(is_owner: true).user
+      self.memberships.find_by(role: "owner").user
     end
 
     # Return boolean indicating if account is currently active, based on billing status
@@ -135,7 +135,7 @@ module Landlord
             if existing_user
               member.user = existing_user
             end
-            member.is_owner = true
+            member.role = "owner"
           end
         end
       end
