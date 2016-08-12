@@ -21,6 +21,10 @@ module Landlord
     before_validation :init_stripe_attributes, only: :create
     after_save :update_stripe_attributes, only: :update
 
+    has_settings do |s|
+      s.key :billing, :defaults => { :address => nil, :cc_emails => nil }
+    end
+
 
     # Return the user who is the account owner
     def owner

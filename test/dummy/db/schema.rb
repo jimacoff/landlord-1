@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811011837) do
+ActiveRecord::Schema.define(version: 20160812023059) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -125,6 +125,17 @@ ActiveRecord::Schema.define(version: 20160811011837) do
     t.index ["invited_by_id"], name: "index_landlord_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_landlord_users_on_invited_by_type_and_invited_by_id"
     t.index ["reset_password_token"], name: "index_landlord_users_on_reset_password_token", unique: true
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "var",         null: false
+    t.text     "value"
+    t.string   "target_type", null: false
+    t.integer  "target_id",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
+    t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
   end
 
 end

@@ -17,12 +17,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 5.0.0"
-  s.add_dependency "devise"                 # User authentication
-  s.add_dependency "devise_invitable"       # Allow Devise users to be invited
-  s.add_dependency "omniauth-google-oauth2" # Google OAuth2 provider for Devise
-  s.add_dependency "pundit"                 # User permission policies
-  s.add_dependency "stripe"                 # Billing
-  s.add_dependency "stripe_event"           # Process incoming webhooks from Stripe
+  s.add_dependency "devise"                   # User authentication
+  s.add_dependency "devise_invitable"         # Allow Devise users to be invited
+  s.add_dependency "omniauth-google-oauth2"   # Google OAuth2 provider for Devise
+  s.add_dependency "pundit"                   # User permission policies
+  s.add_dependency "stripe"                   # Billing
+  s.add_dependency "stripe_event"             # Process incoming webhooks from Stripe
+  s.add_dependency "ledermann-rails-settings" # Store one-off settings for models
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "byebug"
