@@ -7,14 +7,19 @@ module Landlord
     #   en.account_mailer.welcome.subject
     #
     def welcome(account)
-      @email = account.owner.email
-      @name = account.owner.first_name
+      @owner = account.owner
+      @email = @owner.email
+      @name = @owner.first_name
       if !@name
         @name = @email
       end
       @company_name = account.name
       @url = account_url(account)
-      mail(to: @email, subject: "Welcome to your account!")
+      @token = nil
+      if (!@owner.confirmed?)
+        @token = @owner.confirmation_token
+      end
+      mail(to: @email, subject: "Welcome to your new account!")
     end
 
     # Subject can be set in your I18n file at config/locales/en.yml

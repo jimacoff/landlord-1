@@ -26,6 +26,7 @@ module Landlord
     end
 
 
+
     # Return the user who is the account owner
     def owner
       self.memberships.find_by(role: "owner").user
@@ -134,10 +135,13 @@ module Landlord
         if self.memberships.any?
           member = self.memberships.first
           if member
-            # Don't create a user if one already exists with this email
             existing_user = User.find_by(email: member.user.email)
             if existing_user
+              # User already exists; use the existing record
               member.user = existing_user
+            else
+              # New user will receive a welcome email; skip the confirmation email
+              member.user.skip_confirmation_notification!
             end
             member.role = "owner"
           end
@@ -146,7 +150,7 @@ module Landlord
 
       # Create a Stripe customer for the account
       def init_stripe_attributes
-        if self.memberships.any?
+        if self.memberships.any? && self.memberships.first.valid?
           owner_user = self.memberships.first.user
           if !self.stripe_id
             customer = Stripe::Customer.create(email: owner_user.email, plan: self.plan.stripe_id, description: self.name)

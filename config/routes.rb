@@ -6,7 +6,7 @@ Landlord::Engine.routes.draw do
   end
 
   # Root - Redirect unauthenticated users the sign in form
-  root :to => redirect('/users/sign_in')
+  root :to => redirect('/users/sign_in'), as: :unauthenticated_root
 
   # Success message for new account creation
   get '/new/success', to: 'accounts#success', as: 'new_account_success'
@@ -14,23 +14,25 @@ Landlord::Engine.routes.draw do
   # Load Devise routes inside Landlord engine
   devise_for :users, class_name: "Landlord::User", module: :devise, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  # Load StripeEvent route for Stripe webhooks
-  post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
+  # # Load StripeEvent route for Stripe webhooks
+  # post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
+
+
 
   resources :accounts, :path => '/' do
     # Account-scoped controllers go in here
 
-    get 'settings' => 'accounts/settings#index', as: 'settings'
-    patch 'settings' => 'accounts/settings#update', as: 'settings_update'
+    # get 'settings' => 'accounts/settings#index', as: 'settings'
+    # patch 'settings' => 'accounts/settings#update', as: 'settings_update'
 
-    get 'billing' => 'accounts/billing#edit'
-    resource :billing, :controller => 'accounts/billing', only: [:update]
+    # get 'billing' => 'accounts/billing#edit'
+    # resource :billing, :controller => 'accounts/billing', only: [:update]
 
-    get 'users' => 'accounts/users#index', as: 'users'
-    post 'users' => 'accounts/users#create', as: 'new_users'
+    # get 'users' => 'accounts/users#index', as: 'users'
+    # post 'users' => 'accounts/users#create', as: 'new_users'
 
-    resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
-    resource :billing_info, :controller => 'accounts/billing_info'
+    # resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
+    # resource :billing_info, :controller => 'accounts/billing_info'
   end
 
 end

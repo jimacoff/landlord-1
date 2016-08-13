@@ -1,5 +1,10 @@
 Hi <%= @name %>--
 
+<% if @token %>
+  You can confirm your account email through the link below:
+  <%= confirmation_url(@owner, confirmation_token: @token) %>
+<% end %>
+
 Your account is ready!
 
 Company name: <%= @company_name %>
