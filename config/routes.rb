@@ -17,8 +17,8 @@ Landlord::Engine.routes.draw do
   # Load Devise routes inside Landlord engine
   devise_for :users, class_name: "Landlord::User", module: :devise, skip: :registrations, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  # # Load StripeEvent route for Stripe webhooks
-  # post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
+  # Load StripeEvent route for Stripe webhooks
+  post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
 
 
 

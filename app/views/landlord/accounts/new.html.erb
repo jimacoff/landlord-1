@@ -12,6 +12,25 @@
   </div>
 <% end %>
 
+<%= form_for(@account, url: user_google_oauth2_omniauth_authorize_path, html: { id: 'new_account_google' }, method: :get) do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "Company Name", class: 'control-label' %>
+    <%= f.text_field :name, class: 'form-control js-company-name', placeholder: 'Acme Inc', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :plan_id, "Plan", class: 'control-label' %>
+    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Sign in with Google', class: 'btn-google-signin' %>
+    <%= hidden_field_tag 'from', 'sign_up' %>
+  </div>
+<% end %>
+
+<hr />
+
 <%= form_for(@account) do |f| %>
   <div class="form-group">
     <%= f.label :name, "Company Name", class: 'control-label' %>

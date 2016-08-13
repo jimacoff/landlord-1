@@ -17,10 +17,39 @@ module Landlord
       out_name
     end
 
-    def self.from_omniauth(access_token)
-      data = access_token.info
-      user = User.where(:email => data["email"]).first
-      user
+    def self.init_from_google_oauth2(auth_data)
+      if auth_data && auth_data.info && auth_data.provider && auth_data.uid
+        info = auth_data.info
+        provider = auth_data.provider
+        uid = auth_data.uid
+
+        # Find user or initialize a new one
+        user = User.where(:email => info["email"]).first
+        unless user
+          user = User.new(
+            first_name: info["first_name"],
+            last_name: info["last_name"],
+            email: info["email"],
+            password: Devise.friendly_token[0,20],
+            provider: provider,
+            uid: uid
+          )
+          user.skip_confirmation!
+        end
+
+        user
+      else
+        nil
+      end
     end
+
+    def self.find_for_google_oauth2(auth_data, signed_in_resource=nil)
+      info = auth_data.info
+      provider = auth_data.provider
+      uid = auth_data.uid
+
+      user = User.where(:email => info["email"]).first
+    end
+
   end
 end
