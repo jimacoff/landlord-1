@@ -18,9 +18,9 @@
 
     <% if current_user %>
       <p class="right">
-        <%= current_user.email %> |
+        <%= current_user.name %> |
         <%= link_to('Your accounts', landlord.authenticated_root_path) %> |
-        
+        <%= link_to('Profile', landlord.edit_profile_path) %> |
         <%= link_to('Sign out', destroy_user_session_path) %>
       </p>
     <% else %>
