@@ -11,8 +11,11 @@ Landlord::Engine.routes.draw do
   # Success message for new account creation
   get '/new/success', to: 'accounts#success', as: 'new_account_success'
 
+  # Success message for account cancellation
+  get 'canceled', to: 'accounts#canceled', as: 'canceled', as: 'account_canceled'
+
   # Load Devise routes inside Landlord engine
-  devise_for :users, class_name: "Landlord::User", module: :devise, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, class_name: "Landlord::User", module: :devise, skip: :registrations, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
   # # Load StripeEvent route for Stripe webhooks
   # post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
@@ -21,6 +24,9 @@ Landlord::Engine.routes.draw do
 
   resources :accounts, :path => '/' do
     # Account-scoped controllers go in here
+
+    # Account cancellation form
+    get 'cancel' => 'accounts#cancel', as: 'cancel'
 
     # get 'settings' => 'accounts/settings#index', as: 'settings'
     # patch 'settings' => 'accounts/settings#update', as: 'settings_update'

@@ -26,6 +26,8 @@ Then execute:
 $ rails landlord:import_plans
 ```
 
+Copy Devise and Landlord views/mailers into app
+
 ## Contributing
 Contribution directions go here.
 

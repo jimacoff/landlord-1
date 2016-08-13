@@ -37,6 +37,15 @@ module Landlord
       self.status != 'past_due' && self.status != 'unpaid' && self.status != 'canceled'
     end
 
+    def cancel
+      if self.stripe_id
+        customer = Stripe::Customer.retrieve(self.stripe_id)
+        subscription = customer.subscriptions.first.delete
+        self.status = subscription.status
+        self.save
+      end
+    end
+
 
 
     # Stripe webhook events (see /config/initializers/stripe.rb)
