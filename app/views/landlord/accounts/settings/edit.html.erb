@@ -13,7 +13,7 @@
   </div>
 <% end %>
 
-<%= form_for(@current_account, url:account_settings_update_path) do |f| %>
+<%= form_for(@current_account, url: account_settings_path) do |f| %>
   <div class="form-group">
     <%= f.label :name, "Company Name", class: 'control-label' %>
     <%= f.text_field :name, class: 'form-control js-company-name', required: true %>
@@ -22,6 +22,21 @@
   <div class="form-group">
     <%= f.label :plan_id, "Plan", class: 'control-label' %>
     <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :owner_id, "Account Owner", class: 'control-label' %>
+    <%= select_tag :owner_id, options_from_collection_for_select(@users, "id", "name", @owner_id) %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :billing_address, "Address to display on receipts" %>
+    <%= text_area_tag :billing_address, @billing_address %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :billing_cc_emails, "Also send receipts to these email addresses" %>
+    <%= text_field_tag :billing_cc_emails, @billing_cc_emails %>
   </div>
 
   <div class="form-group">

@@ -10,7 +10,7 @@ module Landlord
     end
 
     # Save User Profile data
-    # POST /profile
+    # PATCH/PUT /profile
     def update
       respond_to do |format|
         if params[:user][:password].empty?

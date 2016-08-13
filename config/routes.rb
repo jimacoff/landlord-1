@@ -24,21 +24,23 @@ Landlord::Engine.routes.draw do
   post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
 
 
-
+  # Routes scoped within account
+  # /1/foo
   resources :accounts, :path => '/' do
-    # Account-scoped controllers go in here
 
     # Account cancellation form
     get 'cancel' => 'accounts#cancel', as: 'cancel'
 
-    # get 'settings' => 'accounts/settings#index', as: 'settings'
-    # patch 'settings' => 'accounts/settings#update', as: 'settings_update'
+    # Account billing form
+    resource :billing, :controller => 'accounts/billing', only: [:edit, :update]
 
-    # get 'billing' => 'accounts/billing#edit'
-    # resource :billing, :controller => 'accounts/billing', only: [:update]
+    # Account settings form
+    resource :settings, :controller => 'accounts/settings', only: [:edit, :update]
 
-    # get 'users' => 'accounts/users#index', as: 'users'
-    # post 'users' => 'accounts/users#create', as: 'new_users'
+    
+
+    get 'users', to: 'accounts/users#index', as: 'users'
+    post 'users', to: 'accounts/users#create', as: 'new_users'
 
     # resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
     # resource :billing_info, :controller => 'accounts/billing_info'

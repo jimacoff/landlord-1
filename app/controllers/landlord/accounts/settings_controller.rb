@@ -3,22 +3,54 @@ require_dependency "landlord/application_controller"
 module Landlord
   class Accounts::SettingsController < ApplicationController
     before_action :require_active_account
-    before_action :require_owner
+    before_action :require_account_owner
 
-    def index
+    # Display account settings form
+    # GET /1/settings/edit
+    def edit
       @plans = Plan.all
+      @users = current_account.users
+      @owner_id = current_account.owner.id
+      @billing_address = current_account.settings(:billing).address
+      @billing_cc_emails = current_account.settings(:billing).cc_emails
     end
 
+    # Update account settings
+    # PATCH/PUT /1/settings
     def update
-      respond_to do |format|
-        if @current_account.update(account_params)
-          format.html { redirect_to account_settings_path(@current_account), alert: 'Account was successfully updated.' }
-          format.json { render :show, status: :created, location: @account }
-        else
-          @plans = Plan.all
-          format.html { render :new }
-          format.json { render json: @account.errors, status: :unprocessable_entity }
+      current_account.name = account_params[:name]
+      current_account.plan_id = account_params[:plan_id]
+      current_account.settings(:billing).address = params[:billing_address]
+      current_account.settings(:billing).cc_emails = params[:billing_cc_emails]
+
+      owner_changed = false
+      new_owner_id = params[:owner_id]
+      current_owner_id = current_account.owner.id.to_s
+
+      if new_owner_id != current_owner_id
+        new_owner_membership = current_account.memberships.find_by(user_id: new_owner_id)
+        current_owner_membership = current_account.memberships.find_by(user_id: current_owner_id)
+
+        if new_owner_membership && current_owner_membership
+          new_owner_membership.role = "owner"
+          new_owner_membership.save
+
+          current_owner_membership.role = "admin"
+          current_owner_membership.save
+
+          owner_changed = true
         end
+      end
+
+      if current_account.save && current_account.update_stripe_attributes
+        if !owner_changed
+          redirect_to edit_account_settings_path(@current_account), notice: 'Account was successfully updated.'
+        else
+          redirect_to @current_account, notice: 'Account was successfully updated. You are no longer the Account Owner.'
+        end
+      else
+        @plans = Plan.all
+        render :edit
       end
     end
 
@@ -27,5 +59,6 @@ module Landlord
       def account_params
         params.require(:account).permit(:name, :plan_id)
       end
+
   end
 end

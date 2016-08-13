@@ -6,14 +6,16 @@ module Landlord
     before_action :require_account_owner
 
     # Display credit card entry form
-    # GET /1/billing
+    # GET /1/billing/edit
     def edit
       authorize current_account
       @has_billing_info = current_account.card_last4 && current_account.card_exp_month && current_account.card_exp_year
+      @users = current_account.users
+      @owner_id = current_account.owner.id
     end
 
     # Save credit card details to Stripe and database
-    # POST /1/billing
+    # PATCH/PUT /1/billing
     def update
       customer = Stripe::Customer.retrieve(current_account.stripe_id)
       customer.source = params[:stripe_token]
@@ -26,9 +28,9 @@ module Landlord
       current_account.card_last4 = params[:stripe_card_last4]
       current_account.card_exp_month = params[:stripe_card_exp_month]
       current_account.card_exp_year = params[:stripe_card_exp_year]
-
       current_account.save
-      redirect_to account_billing_path(current_account), notice: 'Card was successfully updated.'
+
+      redirect_to edit_account_billing_path(current_account), notice: 'Card was successfully updated.'
     end
 
   end

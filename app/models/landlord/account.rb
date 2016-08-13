@@ -46,6 +46,21 @@ module Landlord
       end
     end
 
+    # Update the account's Stipe customer object
+    def update_stripe_attributes
+      if self.stripe_id && self.owner
+        customer = Stripe::Customer.retrieve(self.stripe_id)
+        subscription = customer.subscriptions.first
+
+        customer.email = self.owner.email
+        customer.description = self.name
+        customer.save
+
+        subscription.plan = self.plan.stripe_id
+        subscription.save
+      end
+    end
+
 
 
     # Stripe webhook events (see /config/initializers/stripe.rb)
@@ -167,16 +182,6 @@ module Landlord
             self.stripe_id = customer.id
             self.status = subscription.status
           end
-        end
-      end
-
-      # Update the account's Stipe customer object
-      def update_stripe_attributes
-        if self.stripe_id && self.owner
-          customer = Stripe::Customer.retrieve(self.stripe_id)
-          customer.email = self.owner.email
-          customer.description = self.name
-          customer.save
         end
       end
 
