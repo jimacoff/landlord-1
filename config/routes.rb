@@ -1,5 +1,17 @@
 Landlord::Engine.routes.draw do
 
+  namespace :accounts do
+    get 'users/update'
+  end
+
+  namespace :accounts do
+    get 'users/edit'
+  end
+
+  namespace :accounts do
+    get 'users/destroy'
+  end
+
   # Root - Show authenticated users their list of accounts
   authenticated :user do
     root 'accounts#index', as: :authenticated_root
@@ -37,10 +49,8 @@ Landlord::Engine.routes.draw do
     # Account settings form
     resource :settings, :controller => 'accounts/settings', only: [:edit, :update]
 
-    
-
-    get 'users', to: 'accounts/users#index', as: 'users'
-    post 'users', to: 'accounts/users#create', as: 'new_users'
+    # Account users
+    resources :users, :controller => 'accounts/users'
 
     # resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
     # resource :billing_info, :controller => 'accounts/billing_info'
