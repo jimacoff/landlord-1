@@ -16,9 +16,24 @@ module Landlord
 
       if email_array.any? && roles.any? {|r| r[:id] == role_id}
         email_array.each do |email|
-          u = User.invite!(email: email)
-          m = u.memberships.new(account: current_account, role: role_id)
-          m.save
+          invite_sent = false
+
+          u = User.find_by(email: email)
+          if !u
+            u = User.invite!(email: email)
+            invite_sent = true
+          end
+
+          m = u.memberships.find_by(account: current_account)
+          if !m
+            m = u.memberships.new(account: current_account, role: role_id)
+            m.save
+
+            if !invite_sent
+              AccountMailer.invite(m).deliver_later
+            end
+          end
+
         end
 
         redirect_to account_users_path(current_account), notice: 'Users were invited to your account.'

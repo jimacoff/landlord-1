@@ -22,6 +22,12 @@ module Landlord
       mail(to: @email, subject: "Welcome to your new account!")
     end
 
+    def invite(membership)
+      @greeting = "Hi"
+
+      mail(to: membership.user.email, subject: "Existing user invited")
+    end
+
     # Subject can be set in your I18n file at config/locales/en.yml
     # with the following lookup:
     #
