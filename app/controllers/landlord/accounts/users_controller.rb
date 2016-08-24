@@ -6,10 +6,14 @@ module Landlord
     before_action :require_account_owner
     before_action :set_membership, only: [:edit, :update, :destroy]
 
+    # Display list of users (with invite form)
+    # GET /1/users
     def index
       @roles = roles
     end
 
+    # Invite user(s) to account
+    # POST /1/users
     def create
       email_array = params[:email_addresses].split("\r\n")
       role_id = params[:role_id]
@@ -40,6 +44,8 @@ module Landlord
       end
     end
 
+    # Display edit form for a user
+    # GET /1/users/1
     def edit
       if @membership.user_id == current_user.id
         redirect_to account_users_path(current_account), alert: 'Cannot edit yourself.'
@@ -50,6 +56,8 @@ module Landlord
       end
     end
 
+    # Update a user
+    # PATCH/PUT /1/users/1
     def update
       role_id = params[:role_id]
       @membership.role = role_id
@@ -60,6 +68,8 @@ module Landlord
       end
     end
 
+    # Remove a user from the account
+    # DELETE /1/users/1
     def destroy
       if @membership.user_id == current_user.id
         redirect_to account_users_path(current_account), alert: 'Cannot remove yourself from the account.'

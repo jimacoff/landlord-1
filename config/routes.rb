@@ -1,17 +1,5 @@
 Landlord::Engine.routes.draw do
 
-  namespace :accounts do
-    get 'users/update'
-  end
-
-  namespace :accounts do
-    get 'users/edit'
-  end
-
-  namespace :accounts do
-    get 'users/destroy'
-  end
-
   # Root - Show authenticated users their list of accounts
   authenticated :user do
     root 'accounts#index', as: :authenticated_root
@@ -36,6 +24,7 @@ Landlord::Engine.routes.draw do
   post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
 
 
+
   # Routes scoped within account
   # /1/foo
   resources :accounts, :path => '/' do
@@ -46,14 +35,15 @@ Landlord::Engine.routes.draw do
     # Account billing form
     resource :billing, :controller => 'accounts/billing', only: [:edit, :update]
 
+    # Account receipts
+    resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
+
     # Account settings form
     resource :settings, :controller => 'accounts/settings', only: [:edit, :update]
 
     # Account users
     resources :users, :controller => 'accounts/users'
 
-    # resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
-    # resource :billing_info, :controller => 'accounts/billing_info'
   end
 
 end
