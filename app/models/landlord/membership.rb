@@ -13,5 +13,17 @@ module Landlord
     def owner?
       self.role == "owner"
     end
+
+    def admin?
+      self.role == "admin"
+    end
+
+    def normal?
+      self.role == "normal"
+    end
+
+    def restricted?
+      self.role == "restricted"
+    end
   end
 end
