@@ -10,11 +10,7 @@ module Landlord
       @receipt = receipt
       account = receipt.account
       email = account.owner.email
-      cc = nil
-
-      if (account.billing_info)
-        cc = account.billing_info.cc_emails
-      end
+      cc = account.settings(:billing).cc_emails
 
       mail(to: email, subject: 'Charge Succeeded', cc: cc)
     end
@@ -28,7 +24,7 @@ module Landlord
       @receipt = receipt
       account = receipt.account
       email = account.owner.email
-      cc = nil
+      cc = account.settings(:billing).cc_emails
 
       mail(to: email, subject: 'Charge Failed', cc: cc)
     end
@@ -42,7 +38,7 @@ module Landlord
       @receipt = receipt
       account = receipt.account
       email = account.owner.email
-      cc = nil
+      cc = account.settings(:billing).cc_emails
       
       mail(to: email, subject: 'Charge Refunded', cc: cc)
     end

@@ -84,7 +84,7 @@ StripeEvent.configure do |events|
 
   # Occurs whenever a customer disputes a charge with their bank (chargeback).
   events.subscribe 'charge.dispute.created' do |event|
-    Landlord::SupportMailer.message('Stripe dispute', 'charge.dispute.created: ' + event.id).deliver_later
+    Landlord::SupportMailer.notification('Stripe dispute', 'charge.dispute.created: ' + event.id).deliver_later
   end
 
 end

@@ -6,7 +6,7 @@ module Landlord
     #
     #   en.support_mailer.message.subject
     #
-    def message(subject, message)
+    def notification(subject, message)
       @message = message
 
       mail(to: 'support@example.com', subject: subject)

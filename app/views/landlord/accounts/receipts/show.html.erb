@@ -2,5 +2,8 @@
 <ul>
   <li>Charged at: <%= @receipt.charged_at %></li>
   <li>Amount: <%= @receipt.amount %></li>
+  <% if @receipt.amount_refunded > 0 %>
+    <li>Refunded: <%= @receipt.amount %></li>
+  <% end %>
   <li>Description: <%= @receipt.description %></li>
 </ul>
