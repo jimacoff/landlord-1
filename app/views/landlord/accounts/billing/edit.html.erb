@@ -8,7 +8,7 @@
   <hr />
 <% end %>
 
-<%= form_for @current_account, url: url_for(controller: 'accounts/billing', action: 'update'), html: { id: 'payment-form' } do |f| %>
+<%= form_for @current_account, url: account_billing_path, html: { id: 'payment-form' } do |f| %>
   <div id="stripe-error" class="alert alert-danger hidden"></div>
 
   <input type="hidden" name="plan_id" value="<%= @current_account.plan.stripe_id %>" />
