@@ -1,7 +1,7 @@
 class CreateLandlordPlans < ActiveRecord::Migration[5.0]
   def change
     create_table :landlord_plans do |t|
-      t.string :stripe_id
+      t.string :stripe_id, null: false
       t.integer :amount
       t.string :currency
       t.string :interval
@@ -12,6 +12,6 @@ class CreateLandlordPlans < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_index :landlord_plans, :stripe_id
+    add_index :landlord_plans, :stripe_id, unique: true
   end
 end

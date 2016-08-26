@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812023059) do
+ActiveRecord::Schema.define(version: 20160825003716) do
 
   create_table "landlord_accounts", force: :cascade do |t|
     t.string   "name"
@@ -25,30 +25,24 @@ ActiveRecord::Schema.define(version: 20160812023059) do
     t.integer  "card_exp_month"
     t.integer  "card_exp_year"
     t.index ["plan_id"], name: "index_landlord_accounts_on_plan_id"
-    t.index ["stripe_id"], name: "index_landlord_accounts_on_stripe_id"
-  end
-
-  create_table "landlord_billing_infos", force: :cascade do |t|
-    t.integer  "account_id"
-    t.string   "address"
-    t.string   "cc_emails"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_landlord_billing_infos_on_account_id"
+    t.index ["status"], name: "index_landlord_accounts_on_status"
+    t.index ["stripe_id"], name: "index_landlord_accounts_on_stripe_id", unique: true
   end
 
   create_table "landlord_memberships", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "user_id"
+    t.integer  "account_id",             null: false
+    t.integer  "user_id",                null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "role",       default: 0
+    t.index ["account_id", "user_id"], name: "index_landlord_memberships_on_account_id_and_user_id", unique: true
     t.index ["account_id"], name: "index_landlord_memberships_on_account_id"
+    t.index ["role"], name: "index_landlord_memberships_on_role"
     t.index ["user_id"], name: "index_landlord_memberships_on_user_id"
   end
 
   create_table "landlord_plans", force: :cascade do |t|
-    t.string   "stripe_id"
+    t.string   "stripe_id",            null: false
     t.integer  "amount"
     t.string   "currency"
     t.string   "interval"
@@ -58,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160812023059) do
     t.integer  "trial_period_days"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-    t.index ["stripe_id"], name: "index_landlord_plans_on_stripe_id"
+    t.index ["stripe_id"], name: "index_landlord_plans_on_stripe_id", unique: true
   end
 
   create_table "landlord_receipts", force: :cascade do |t|
@@ -87,6 +81,7 @@ ActiveRecord::Schema.define(version: 20160812023059) do
     t.string   "stripe_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["stripe_id"], name: "index_landlord_stripe_webhooks_on_stripe_id", unique: true
   end
 
   create_table "landlord_users", force: :cascade do |t|

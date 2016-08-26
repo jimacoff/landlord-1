@@ -6,16 +6,16 @@ end
 
 class RailsSettingsMigration < MIGRATION_BASE_CLASS
   def self.up
-    create_table :landlord_settings do |t|
+    create_table :settings do |t|
       t.string     :var,    :null => false
       t.text       :value
       t.references :target, :null => false, :polymorphic => true
       t.timestamps :null => true
     end
-    add_index :landlord_settings, [ :target_type, :target_id, :var ], :unique => true
+    add_index :settings, [ :target_type, :target_id, :var ], :unique => true
   end
 
   def self.down
-    drop_table :landlord_settings
+    drop_table :settings
   end
 end

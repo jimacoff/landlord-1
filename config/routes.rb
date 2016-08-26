@@ -12,7 +12,7 @@ Landlord::Engine.routes.draw do
   get '/new/success', to: 'accounts#success', as: 'new_account_success'
 
   # Success message for account cancellation
-  get 'canceled', to: 'accounts#canceled', as: 'canceled', as: 'account_canceled'
+  get 'canceled', to: 'accounts#canceled', as: 'account_canceled'
 
   # Load Devise routes inside Landlord engine
   devise_for :users, class_name: "Landlord::User", module: :devise, skip: :registrations, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
