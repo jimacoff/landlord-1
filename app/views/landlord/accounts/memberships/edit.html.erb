@@ -1,0 +1,14 @@
+<h1>Edit User Membership</h1>
+
+<p><%= @membership.user.name %></p>
+
+<%= form_for([@current_account, @membership]) do |f| %>
+  <div class="form-group">
+    <%= f.label :role %>
+    <%= f.select(:role, @roles.collect {|r| [r[:name], r[:id]]}) %>
+  </div>
+
+  <div class="form-group">
+    <%= submit_tag 'Update user', class: 'btn btn-primary' %>
+  </div>
+<% end %>

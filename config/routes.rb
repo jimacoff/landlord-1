@@ -41,8 +41,8 @@ Landlord::Engine.routes.draw do
     # Account settings form
     resource :settings, :controller => 'accounts/settings', only: [:edit, :update]
 
-    # Account users
-    resources :users, :controller => 'accounts/users'
+    # Account user memberships
+    resources :memberships, :controller => 'accounts/memberships', only: [:index, :create, :edit, :update, :destroy]
 
   end
 

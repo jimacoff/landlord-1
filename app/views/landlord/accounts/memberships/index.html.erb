@@ -1,15 +1,15 @@
-<h1>Users</h1>
+<h1>User Memberships</h1>
 <ul>
-  <% @current_account.memberships.each do |m| %>
+  <% @memberships.each do |m| %>
     <li>
       <%= m.role %>: <%= m.user.name %>
-      <%= link_to 'Edit', edit_account_user_path(current_account, m.user) %> | 
-      <%= link_to 'Delete', account_user_path(current_account, m.user), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Edit', edit_account_membership_path(current_account, m) %> | 
+      <%= link_to 'Delete', account_membership_path(current_account, m), method: :delete, data: { confirm: 'Are you sure?' } %>
     </li>
   <% end %>
 </ul>
 
-<%= form_tag account_users_path(@current_account), method: :create do %>
+<%= form_tag(account_memberships_path(@current_account), method: :create) do %>
   <div class="form-group">
     <%= text_area_tag :email_addresses, nil, rows: 10, class: 'form-control', placeholder: 'user@example.com', required: true %>
   </div>
