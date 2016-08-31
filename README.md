@@ -29,7 +29,7 @@ $ rails db:migrate
 $ rails landlord:import_plans
 ```
 
-Copy Devise and Landlord views/mailers into app
+Copy `app/views/devise` and `app/views/landlord` from the Landlord gem directory to your application's `app/views` directory
 
 ## Contributing
 Contribution directions go here.
