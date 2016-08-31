@@ -1,5 +1,7 @@
 module Landlord
   class Receipt < ApplicationRecord
+    self.table_name = 'receipts'
+
     belongs_to :account
 
     validates :stripe_id, presence: true, uniqueness: true

@@ -9,6 +9,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'landlord'
+gem 'figaro'
 ```
 
 And then execute:
@@ -23,6 +24,8 @@ Add your Stripe API keys to `config/application.yml`
 
 Then execute:
 ```bash
+$ rails landlord:install:migrations
+$ rails db:migrate
 $ rails landlord:import_plans
 ```
 

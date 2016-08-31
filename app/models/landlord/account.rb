@@ -1,5 +1,7 @@
 module Landlord
   class Account < ApplicationRecord
+    self.table_name = 'accounts'
+    
     belongs_to :plan
     has_many :users
     has_many :memberships, inverse_of: :account

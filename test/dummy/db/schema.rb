@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20160825003716) do
 
-  create_table "landlord_accounts", force: :cascade do |t|
+  create_table "accounts", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
@@ -24,24 +24,22 @@ ActiveRecord::Schema.define(version: 20160825003716) do
     t.string   "card_last4"
     t.integer  "card_exp_month"
     t.integer  "card_exp_year"
-    t.index ["plan_id"], name: "index_landlord_accounts_on_plan_id"
-    t.index ["status"], name: "index_landlord_accounts_on_status"
-    t.index ["stripe_id"], name: "index_landlord_accounts_on_stripe_id", unique: true
+    t.index ["plan_id"], name: "index_accounts_on_plan_id"
+    t.index ["status"], name: "index_accounts_on_status"
+    t.index ["stripe_id"], name: "index_accounts_on_stripe_id", unique: true
   end
 
-  create_table "landlord_memberships", force: :cascade do |t|
+  create_table "memberships", force: :cascade do |t|
     t.integer  "account_id",             null: false
     t.integer  "user_id",                null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "role",       default: 0
-    t.index ["account_id", "user_id"], name: "index_landlord_memberships_on_account_id_and_user_id", unique: true
-    t.index ["account_id"], name: "index_landlord_memberships_on_account_id"
-    t.index ["role"], name: "index_landlord_memberships_on_role"
-    t.index ["user_id"], name: "index_landlord_memberships_on_user_id"
+    t.index ["account_id", "user_id"], name: "index_memberships_on_account_id_and_user_id", unique: true
+    t.index ["role"], name: "index_memberships_on_role"
   end
 
-  create_table "landlord_plans", force: :cascade do |t|
+  create_table "plans", force: :cascade do |t|
     t.string   "stripe_id",            null: false
     t.integer  "amount"
     t.string   "currency"
@@ -52,10 +50,10 @@ ActiveRecord::Schema.define(version: 20160825003716) do
     t.integer  "trial_period_days"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-    t.index ["stripe_id"], name: "index_landlord_plans_on_stripe_id", unique: true
+    t.index ["stripe_id"], name: "index_plans_on_stripe_id", unique: true
   end
 
-  create_table "landlord_receipts", force: :cascade do |t|
+  create_table "receipts", force: :cascade do |t|
     t.string   "stripe_id",       null: false
     t.integer  "account_id",      null: false
     t.integer  "amount"
@@ -73,18 +71,28 @@ ActiveRecord::Schema.define(version: 20160825003716) do
     t.string   "status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.index ["account_id"], name: "index_landlord_receipts_on_account_id"
-    t.index ["stripe_id"], name: "index_landlord_receipts_on_stripe_id"
+    t.index ["stripe_id"], name: "index_receipts_on_stripe_id"
   end
 
-  create_table "landlord_stripe_webhooks", force: :cascade do |t|
+  create_table "settings", force: :cascade do |t|
+    t.string   "var",         null: false
+    t.text     "value"
+    t.string   "target_type", null: false
+    t.integer  "target_id",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
+    t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
+  end
+
+  create_table "stripe_webhooks", force: :cascade do |t|
     t.string   "stripe_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["stripe_id"], name: "index_landlord_stripe_webhooks_on_stripe_id", unique: true
+    t.index ["stripe_id"], name: "index_stripe_webhooks_on_stripe_id", unique: true
   end
 
-  create_table "landlord_users", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -113,24 +121,13 @@ ActiveRecord::Schema.define(version: 20160825003716) do
     t.integer  "invitations_count",      default: 0
     t.string   "provider"
     t.string   "uid"
-    t.index ["confirmation_token"], name: "index_landlord_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_landlord_users_on_email", unique: true
-    t.index ["invitation_token"], name: "index_landlord_users_on_invitation_token", unique: true
-    t.index ["invitations_count"], name: "index_landlord_users_on_invitations_count"
-    t.index ["invited_by_id"], name: "index_landlord_users_on_invited_by_id"
-    t.index ["invited_by_type", "invited_by_id"], name: "index_landlord_users_on_invited_by_type_and_invited_by_id"
-    t.index ["reset_password_token"], name: "index_landlord_users_on_reset_password_token", unique: true
-  end
-
-  create_table "settings", force: :cascade do |t|
-    t.string   "var",         null: false
-    t.text     "value"
-    t.string   "target_type", null: false
-    t.integer  "target_id",   null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
-    t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invitations_count"], name: "index_users_on_invitations_count"
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

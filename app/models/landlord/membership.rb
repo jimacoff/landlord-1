@@ -1,5 +1,7 @@
 module Landlord
   class Membership < ApplicationRecord
+    self.table_name = 'memberships'
+
     enum role: { normal: 0, admin: 1, owner: 2, restricted: 3 }
 
     belongs_to :account

@@ -1,8 +1,8 @@
 class CreateLandlordReceipts < ActiveRecord::Migration[5.0]
   def change
-    create_table :landlord_receipts do |t|
+    create_table :receipts do |t|
       t.string :stripe_id, index: true, unique: true, null: false
-      t.references :account, foreign_key: true, null: false
+      t.integer :account_id, foreign_key: true, null: false
       t.integer :amount
       t.integer :amount_refunded
       t.boolean :captured

@@ -5,7 +5,7 @@ module Landlord
     isolate_namespace Landlord
 
     if Rails.env.development? 
-      OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+      #OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
     end
   end
 end
