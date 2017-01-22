@@ -1,21 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  stripe_id: MyString
-  amount: 1
-  currency: MyString
-  interval: MyString
-  interval_count: 1
-  name: MyString
-  statement_descriptor: MyString
-  trial_period_days: 1
+  name: Plan 1
+  stripe_id: plan_1
 
 two:
-  stripe_id: MyString
-  amount: 1
-  currency: MyString
-  interval: MyString
-  interval_count: 1
-  name: MyString
-  statement_descriptor: MyString
-  trial_period_days: 1
+  name: Plan 2
+  stripe_id: plan_2
