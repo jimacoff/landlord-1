@@ -2,8 +2,8 @@ require 'test_helper'
 
 module Landlord
   class PlanTest < ActiveSupport::TestCase
-    # test "the truth" do
-    #   assert true
-    # end
+
+    # TODO: Write Plan tests
+
   end
 end
