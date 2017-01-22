@@ -1,5 +1,11 @@
 # Landlord
-Short description and motivation.
+Landlord is a Rails engine that provides multi-tenant functionality for your SaaS application. Landlord includes:
+* Multi-tenant accounts (with resources scoped to individual accounts)
+* Stripe recurring billing (with automated receipts)
+* User authentication provided by Devise
+* Multiple-account membership for users (with roles)
+* Custom account/user settings provided by Ledermann Rails Settings
+* Custom user/role permissions provided by Pundit
 
 ## Running the dummy test app
 Clone this repo, navigate to the repo root path in your terminal/command prompt, then run:
@@ -8,7 +14,7 @@ $ bundle install
 $ rails db:migrate
 ```
 
-Optional: update `/test/dummy/config/application.yml` with your own Stripe/Google OAuth API keys:
+Update `/test/dummy/config/application.yml` with your Stripe/Google OAuth API keys:
 ```ruby
 stripe_api_key: your_value_goes_here
 stripe_publishable_key: your_value_goes_here
@@ -24,7 +30,7 @@ $ rails landlord:import_plans
 $ rails s
 ```
 
-Navigate to http://localhost:3000/new/ to create a new account
+Navigate to [http://localhost:3000/new](http://localhost:3000/new) to create a new account
 
 Notes:
 * You may want to run a local mail server such as https://mailcatcher.me/ to receive signup emails
