@@ -2,8 +2,8 @@ require 'test_helper'
 
 module Landlord
   class UserTest < ActiveSupport::TestCase
-    # test "the truth" do
-    #   assert true
-    # end
+
+    # User model should be covered under Devise tests
+
   end
 end

@@ -3,7 +3,9 @@
 one:
   name: Account1
   plan_id: 1
+  status: active
 
 two:
   name: Account2
   plan_id: 1
+  status: trialing

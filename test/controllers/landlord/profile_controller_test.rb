@@ -4,14 +4,9 @@ module Landlord
   class ProfileControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 
-    test "should get edit" do
-      get profile_edit_url
-      assert_response :success
-    end
-
-    test "should get update" do
-      get profile_update_url
-      assert_response :success
+    test "should not display edit profile route unless authenticated" do
+      get edit_profile_url
+      assert_response :redirect
     end
 
   end
