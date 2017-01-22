@@ -2,14 +2,13 @@
 Short description and motivation.
 
 ## Running the dummy test app
-1. Clone this repo
-2. Open `/test/dummy` in your terminal/command prompt
+Clone this repo, navigate to the repo root path in your terminal/command prompt, then run:
 ```bash
 $ bundle install
-$ bundle exec figaro install
+$ rails db:migrate
 ```
 
-Update `/test/dummy/config/application.yml` with API keys for Stripe and Google OAuth:
+Optional: update `/test/dummy/config/application.yml` with your own Stripe/Google OAuth API keys:
 ```ruby
 stripe_api_key: your_value_goes_here
 stripe_publishable_key: your_value_goes_here
@@ -18,15 +17,19 @@ google_client_id: your_value_goes_here
 google_client_secret: your_value_goes_here
 ```
 
-Then execute:
+Then run:
 ```bash
-$ rails landlord:install:migrations
-$ rails db:migrate
+$ cd test/dummy
 $ rails landlord:import_plans
 $ rails s
 ```
 
-Navigate to http://localhost:3000/new to create a new account (note: be sure to start a local mail server such as https://mailcatcher.me/ to receive signup emails)
+Navigate to http://localhost:3000/new/ to create a new account
+
+Notes:
+* You may want to run a local mail server such as https://mailcatcher.me/ to receive signup emails
+* Your local dev server must be publicly accessible in order to use Google OAuth
+* Your local dev server must be publicly accessible in order to receive Stripe billing webhooks
 
 ## Installation within your application
 Add this line to your application's Gemfile:
