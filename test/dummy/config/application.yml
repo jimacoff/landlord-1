@@ -10,9 +10,9 @@
 #   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
 
-stripe_api_key: ***REMOVED***
-stripe_publishable_key: ***REMOVED***
-stripe_webhook_secret: ***REMOVED***
+stripe_api_key: your_value_goes_here
+stripe_publishable_key: your_value_goes_here
+stripe_webhook_secret: your_value_goes_here
 
-google_client_id: ***REMOVED***
-google_client_secret: ***REMOVED***
+google_client_id: your_value_goes_here
+google_client_secret: your_value_goes_here
