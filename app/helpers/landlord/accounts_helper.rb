@@ -2,10 +2,6 @@ module Landlord
   module AccountsHelper
 
     # Helpers for Devise forms
-    
-    def resource_name
-      :user
-    end
 
     def resource
       @resource ||= User.new

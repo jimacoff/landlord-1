@@ -6,43 +6,40 @@ Landlord::Engine.routes.draw do
   end
 
   # Root - Redirect unauthenticated users the sign in form
-  root :to => redirect('/users/sign_in'), as: :unauthenticated_root
+  root to: redirect('/users/sign_in'), as: :unauthenticated_root
 
-  # Success message for new account creation
-  get '/new/success', to: 'accounts#success', as: 'new_account_success'
+  # Stripe - Load StripeEvent route for Stripe webhooks
+  post 'stripe_event', to: 'stripe_webhook#event'
 
-  # Success message for account cancellation
-  get 'canceled', to: 'accounts#canceled', as: 'account_canceled'
+  # Users - Load Devise routes inside Landlord engine
+  devise_for :users, class_name: 'Landlord::User', module: :devise, skip: :registrations, controllers: { invitations: 'devise/invitations', omniauth_callbacks: 'users/omniauth_callbacks' }
 
-  # Load Devise routes inside Landlord engine
-  devise_for :users, class_name: "Landlord::User", module: :devise, skip: :registrations, controllers: { invitations: 'devise/invitations', :omniauth_callbacks => "users/omniauth_callbacks" }
+  # Users - Profile views
+  resource :profile, controller: 'profile', only: [:edit, :update]
 
-  # User profile edit/update
-  resource :profile, :controller => 'profile', only: [:edit, :update]
-
-  # Load StripeEvent route for Stripe webhooks
-  post 'stripe_event', to: 'stripe_webhook#event' #mount StripeEvent::Engine, at: '/stripe_webhook'
+  # Accounts - Created/canceled confirmations
+  get 'created', to: 'accounts/created#index', as: 'account_created'
+  get 'canceled', to: 'accounts/canceled#index', as: 'account_canceled'
 
 
 
-  # Routes scoped within account
-  # /1/foo
+  # Accounts - Scoped routes (/:account_id/foo)
   resources :accounts, :path => '/' do
 
     # Account cancellation form
-    get 'cancel' => 'accounts#cancel', as: 'cancel'
+    get 'cancel', to: 'accounts#cancel', as: 'cancel'
 
     # Account billing form
-    resource :billing, :controller => 'accounts/billing', only: [:edit, :update]
+    resource :billing, controller: 'accounts/billing', only: [:edit, :update]
 
     # Account receipts
-    resources :receipts, :controller => 'accounts/receipts', only: [:index, :show]
+    resources :receipts, controller: 'accounts/receipts', only: [:index, :show]
 
     # Account settings form
-    resource :settings, :controller => 'accounts/settings', only: [:edit, :update]
+    resource :settings, controller: 'accounts/settings', only: [:edit, :update]
 
     # Account user memberships
-    resources :memberships, :controller => 'accounts/memberships', only: [:index, :create, :edit, :update, :destroy]
+    resources :memberships, controller: 'accounts/memberships', only: [:index, :create, :edit, :update, :destroy]
 
   end
 

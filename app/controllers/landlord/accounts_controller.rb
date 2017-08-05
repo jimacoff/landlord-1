@@ -36,17 +36,12 @@ module Landlord
           redirect_to @account, notice: 'Welcome to your new account!'
         else
           # User is not signed in or specified another user as the account owner
-          redirect_to new_account_success_path
+          redirect_to account_created_path
         end
       else
         @plans = Plan.all
         render :new
       end
-    end
-
-    # Account created success page
-    # GET /new/success
-    def success
     end
 
     # Show a single account's dashboard page
@@ -66,18 +61,7 @@ module Landlord
 
       AccountMailer.canceled(@current_account).deliver_later
 
-      # if current_user.active_accounts?
-      # Keep user signed in
-      # else
-      # Sign user out
-      # end
-
       redirect_to account_canceled_path, notice: 'Account was successfully canceled.'
-    end
-
-    # Account cancellation form
-    # GET /canceled
-    def canceled
     end
 
     private
