@@ -13,16 +13,10 @@ module Landlord
     # PATCH/PUT /profile
     def update
       respond_to do |format|
-        if params[:user][:password].empty?
-          params[:user].delete :password
-          params[:user].delete :password_confirmation
-        end
+        current_user.assign_attributes(user_params)
 
         notice = 'Profile was successfully updated.'
-        current_user.assign_attributes(user_params)
-        if current_user.email_changed?
-          notice = "We've sent a confirmation link to your new email address. Please click it to complete your update."
-        end
+        notice = "A confirmation link has been sent to your new email address. Please click it to complete your update." if current_user.email_changed?
 
         if current_user.save
           format.html { redirect_to edit_profile_path, notice: notice }
@@ -37,6 +31,7 @@ module Landlord
     private
 
       def user_params
+        params[:user] = params[:user].except(:password, :password_confirmation) if params[:user][:password].empty?
         params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation)
       end
 
