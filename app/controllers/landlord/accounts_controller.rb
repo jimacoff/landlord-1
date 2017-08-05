@@ -11,7 +11,6 @@ module Landlord
     # GET /
     def index
       @accounts = current_user.accounts.not_canceled
-      redirect_to account_path(@accounts.first) unless @accounts.size == 1
     end
 
     # Show the new account signup form

@@ -67,6 +67,23 @@ module Landlord
       end
     end
 
+    def update_stripe_card(stripe_params)
+      customer = Stripe::Customer.retrieve(self.stripe_id)
+      subscription = customer.subscriptions.first
+
+      customer.source = stripe_params[:token]
+      customer.save
+
+      self.update(
+        status: subscription.status,
+        card_name: stripe_params[:card_name],
+        card_brand: stripe_params[:card_brand],
+        card_last4: stripe_params[:card_last4],
+        card_exp_month: stripe_params[:card_exp_month],
+        card_exp_year: stripe_params[:card_exp_year]
+      )
+    end
+
 
 
     # Stripe webhook events (see /config/initializers/stripe.rb)
