@@ -3,26 +3,20 @@
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  helper_method :current_account, :current_membership, :require_account, :require_active_account
+
   def current_account
     @current_account
   end
-
-  helper_method :current_account
 
   def current_membership
     @current_membership
   end
 
-  helper_method :current_membership
-
   def require_account
     get_current_account_and_membership
-    if !@current_account
-      redirect_to accounts_path # User does not belong to the requested account
-    end
+    redirect_to(accounts_path) unless @current_account
   end
-
-  helper_method :require_account
 
   def require_active_account
     get_current_account_and_membership
@@ -38,8 +32,6 @@
       end
     end
   end
-
-  helper_method :require_active_account
 
   def require_account_owner
     if !@current_membership.owner?

@@ -1,4 +1,4 @@
-require_dependency "landlord/application_controller"
+require_dependency 'landlord/application_controller'
 
 module Landlord
   class AccountsController < ApplicationController
@@ -12,9 +12,7 @@ module Landlord
     # GET /
     def index
       @accounts = current_user.accounts.not_canceled
-      if @accounts.size == 1
-        redirect_to account_path @accounts.first
-      end
+      redirect_to account_path(@accounts.first) unless @accounts.size == 1
     end
 
     # Show the new account signup form
@@ -34,10 +32,10 @@ module Landlord
         AccountMailer.welcome(@account).deliver_later
 
         if current_user && @account.owner == current_user
-          # User is already signed in; take them directly to the account dashboard
+          # User is already signed in and owns the account
           redirect_to @account, notice: 'Welcome to your new account!'
         else
-          # User is not signed in; take them to the success page
+          # User is not signed in or specified another user as the account owner
           redirect_to new_account_success_path
         end
       else
@@ -90,7 +88,9 @@ module Landlord
       end
 
       def account_params
-        params.require(:account).permit(:name, :plan_id, memberships_attributes: [ user_attributes: [ :first_name, :last_name, :email, :password ] ])
+        user_attributes = [:first_name, :last_name, :email, :password]
+        memberships_attributes = [user_attributes: [:first_name, :last_name, :email, :password]]
+        params.require(:account).permit(:name, :plan_id, memberships_attributes: memberships_attributes)
       end
 
   end
