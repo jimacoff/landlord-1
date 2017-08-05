@@ -5,8 +5,8 @@
 require "landlord/stripe_plan_fetcher"
 
 namespace :landlord do
-  desc "Import plans from Stripe"
-  task :import_plans => :environment do
-    Landlord::StripePlanFetcher.create_plans
+  desc "Fetch plans from Stripe"
+  task :fetch_stripe_plans => :environment do
+    Landlord::StripePlanFetcher.fetch_all
   end
 end

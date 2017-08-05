@@ -26,7 +26,7 @@ google_client_secret: your_value_goes_here
 Then run:
 ```bash
 $ cd test/dummy
-$ rails landlord:import_plans
+$ rails landlord:fetch_stripe_plans
 $ rails s
 ```
 
@@ -59,7 +59,7 @@ Then execute:
 ```bash
 $ rails landlord:install:migrations
 $ rails db:migrate
-$ rails landlord:import_plans
+$ rails landlord:fetch_stripe_plans
 ```
 
 Copy `app/views/devise` and `app/views/landlord` from the Landlord gem directory to your application's `app/views` directory
