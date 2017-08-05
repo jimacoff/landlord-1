@@ -39,6 +39,10 @@ module Landlord
       self.status != 'past_due' && self.status != 'unpaid' && self.status != 'canceled'
     end
 
+    def billing_error?
+      self.status == 'past_due' || self.status == 'unpaid'
+    end
+
     def cancel
       if self.stripe_id
         customer = Stripe::Customer.retrieve(self.stripe_id)

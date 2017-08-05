@@ -2,7 +2,6 @@ require_dependency "landlord/application_controller"
 
 module Landlord
   class Accounts::ReceiptsController < ApplicationController
-    before_action :require_account
     before_action :require_account_owner
     before_action :set_receipt, only: [:show]
 

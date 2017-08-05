@@ -3,10 +3,9 @@ require_dependency 'landlord/application_controller'
 module Landlord
   class AccountsController < ApplicationController
     prepend_before_action :set_account_id, only: [:show, :destroy]
-    before_action :authenticate_user!, only: [:index, :cancel, :destroy]
+    before_action :authenticate_user!, only: [:index]
     before_action :require_active_account, only: [:show]
-    before_action :require_account, only: [:cancel, :destroy]
-    before_action :require_account_owner, only: [:cancel, :destroy]
+    before_action :require_account_owner, only: [:destroy]
 
     # List the signed-in user's accounts
     # GET /
@@ -47,11 +46,6 @@ module Landlord
     # Show a single account's dashboard page
     # GET /1
     def show
-    end
-
-    # Account cancellation form
-    # GET /1/cancel
-    def cancel
     end
 
     # Destroy account
