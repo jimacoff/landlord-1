@@ -10,39 +10,18 @@ module Landlord
     # Display list of user memberships (with invite form)
     # GET /1/users
     def index
-      @memberships = @current_account.memberships.all
+      @memberships = current_account.memberships.all
     end
 
     # Invite user(s) to account
     # POST /1/users
     def create
-      email_array = params[:email_addresses].split("\r\n")
+      email_addresses = params[:email_addresses].split("\r\n")
       role_id = params[:role_id]
+      account_id = current_account.id
+      memberships = Landlord::Membership.add_memberships(email_addresses, role_id, account_id)
 
-      if email_array.any? && @roles.any? {|r| r[:id] == role_id}
-        email_array.each do |email|
-          invite_sent = false
-
-          u = User.find_by(email: email)
-          if !u
-            u = User.invite!(email: email)
-            invite_sent = true
-          end
-
-          m = u.memberships.find_by(account: @current_account)
-          if !m
-            m = u.memberships.new(account: @current_account, role: role_id)
-            m.save
-
-            if !invite_sent
-              AccountMailer.invite(m).deliver_later
-            end
-          end
-
-        end
-
-        redirect_to account_memberships_path(@current_account), notice: 'Users were invited to your account.'
-      end
+      redirect_to account_memberships_path(current_account), notice: "#{memberships.size} users were invited to your account."
     end
 
     # Display edit form for a user membership
@@ -54,7 +33,7 @@ module Landlord
     # PATCH/PUT /1/users/1
     def update
       if @membership.update(membership_params)
-        redirect_to account_memberships_path(@current_account), notice: 'User updated.'
+        redirect_to account_memberships_path(current_account), notice: 'User updated.'
       else
         render :edit
       end
@@ -64,7 +43,7 @@ module Landlord
     # DELETE /1/users/1
     def destroy
       @membership.destroy
-      redirect_to account_memberships_path(@current_account), notice: 'User removed.'
+      redirect_to account_memberships_path(current_account), notice: 'User removed.'
     end
 
     private
@@ -78,12 +57,12 @@ module Landlord
       end
 
       def set_membership
-        @membership = @current_account.memberships.find_by(user_id: params[:id])
+        @membership = current_account.memberships.find_by(user_id: params[:id])
 
         if @membership.user_id == current_user.id
-          redirect_to account_memberships_path(@current_account), alert: 'Cannot edit yourself.'
+          redirect_to account_memberships_path(current_account), alert: 'Cannot edit yourself.'
         elsif @membership.owner?
-          redirect_to account_memberships_path(@current_account), alert: 'Cannot edit the account owner.'
+          redirect_to account_memberships_path(current_account), alert: 'Cannot edit the account owner.'
         end
       end
 

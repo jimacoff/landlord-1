@@ -8,7 +8,7 @@ module Landlord
     # Display list of receipts
     # GET /1/receipts
     def index
-      @receipts = @current_account.receipts.all
+      @receipts = current_account.receipts.all
     end
 
     # Display individual receipt
@@ -19,7 +19,7 @@ module Landlord
     private
 
       def set_receipt
-        @receipt = @current_account.receipts.find(params[:id])
+        @receipt = current_account.receipts.find(params[:id])
       end
   end
 end
