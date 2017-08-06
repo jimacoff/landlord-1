@@ -4,6 +4,12 @@ module Landlord
 
     has_many :accounts
 
+    validates :stripe_id, presence: true, uniqueness: { case_sensitive: false }
+    validates :amount, presence: true
+    validates :currency, presence: true
+    validates :interval, presence: true
+    validates :name, presence: true
+
     # Create/update from a Stripe::Plan
     def self.from_stripe(stripe_plan)
       plan = Landlord::Plan.find_or_initialize_by(stripe_id: stripe_plan.id)

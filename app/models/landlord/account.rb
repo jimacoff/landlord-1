@@ -29,39 +29,40 @@ module Landlord
 
     # Return the user who is the account owner
     def owner
-      m = memberships.find_by(role: Landlord::Role.owner)
-      raise "account has no user assigned as owner" unless m
-      m.user
+      membership = self.memberships.find_by(role: Landlord::Role.owner)
+      raise "account has no user assigned as owner" unless membership
+      membership.user
     end
 
     # Use billing status to determine if account is active
     def active?
-      status != 'past_due' && status != 'unpaid' && status != 'canceled'
+      self.status != 'past_due' && self.status != 'unpaid' && self.status != 'canceled'
     end
 
     # Does the account require billing action?
     def billing_error?
-      status == 'past_due' || status == 'unpaid'
+      self.status == 'past_due' || self.status == 'unpaid'
     end
 
     def cancel
-      raise "account has no billing ID" unless stripe_id
+      raise "account has no billing ID" unless self.stripe_id
 
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(self.stripe_id)
       subscription = customer.subscriptions.first.delete
-      status = subscription.status
-      save
+
+      self.status = subscription.status
+      self.save
     end
 
     # Update the account's Stipe customer object
     def update_stripe_attributes
-      raise "account has no billing ID" unless stripe_id
+      raise "account has no billing ID" unless self.stripe_id
 
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(self.stripe_id)
       subscription = customer.subscriptions.first
 
-      customer.email = owner.email
-      customer.description = name
+      customer.email = self.owner.email
+      customer.description = self.name
       customer.save
 
       subscription.plan = plan.stripe_id
@@ -70,16 +71,16 @@ module Landlord
 
     # Update an account's credit card for billing
     def update_stripe_card(stripe_params)
-      raise "account has no billing ID" unless stripe_id
+      raise "account has no billing ID" unless self.stripe_id
       raise "payment token not provided" unless stripe_params[:token]
 
-      customer = Stripe::Customer.retrieve(stripe_id)
+      customer = Stripe::Customer.retrieve(self.stripe_id)
       subscription = customer.subscriptions.first
 
       customer.source = stripe_params[:token]
       customer.save
 
-      update(
+      self.update(
         status: subscription.status,
         card_name: stripe_params[:card_name],
         card_brand: stripe_params[:card_brand],
@@ -110,12 +111,12 @@ module Landlord
       settings(:billing).cc_emails = account_params[:billing_cc_emails]
 
       new_owner_id = account_params[:owner_id]
-      current_owner_id = owner.id.to_s
+      current_owner_id = self.owner.id.to_s
       change_owner = new_owner_id && new_owner_id != current_owner_id
 
       if change_owner
-        new_owner_membership = memberships.find_by(user_id: new_owner_id)
-        current_owner_membership = memberships.find_by(user_id: current_owner_id)
+        new_owner_membership = self.memberships.find_by(user_id: new_owner_id)
+        current_owner_membership = self.memberships.find_by(user_id: current_owner_id)
 
         if new_owner_membership
           new_owner_membership.role = Landlord::Role.owner
@@ -124,13 +125,13 @@ module Landlord
           current_owner_membership.role = Landlord::Role.admin
           current_owner_membership.save
 
-          update_stripe_attributes
+          self.update_stripe_attributes
         else
           errors.add(:base, "No membership found for new account owner.")
         end
       end
 
-      update(account_update_params)
+      self.update(account_update_params)
     end
 
 
@@ -190,28 +191,30 @@ module Landlord
 
       # Initialize the account owner user and membership relationship
       def init_owner
-        member = memberships.first if memberships.any?
-        member.role = Landlord::Role.owner if member
-        existing_user = User.find_by(email: member.user.email) if member
+        if self.memberships.any?
+          member = self.memberships.first
+          member.role = Landlord::Role.owner
+          existing_user = User.find_by(email: member.user.email)
 
-        if existing_user
-          # User already exists; use the existing record
-          member.user = existing_user
-        else
-          # New user will receive a welcome email; skip the confirmation email
-          member.user.skip_confirmation_notification!
+          if existing_user
+            # User already exists; use the existing record
+            member.user = existing_user
+          else
+            # New user will receive a welcome email; skip the confirmation email
+            member.user.skip_confirmation_notification!
+          end
         end
       end
 
       # Create a Stripe customer for the account
       def init_stripe_attributes
-        if memberships.any? && memberships.first.valid?
-          owner_user = memberships.first.user
-          if !stripe_id
+        if self.memberships.any? && self.memberships.first.valid?
+          owner_user = self.memberships.first.user
+          if !self.stripe_id
             customer = Stripe::Customer.create(email: owner_user.email, plan: plan.stripe_id, description: name)
             subscription = customer.subscriptions.first
-            stripe_id = customer.id
-            status = subscription.status
+            self.stripe_id = customer.id
+            self.status = subscription.status
           end
         end
       end

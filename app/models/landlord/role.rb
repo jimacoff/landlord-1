@@ -15,7 +15,7 @@ module Landlord
 
     # Landlord::Role.owner, Landlord::Role.admin, etc
     Landlord::Role.keys.each do |key|
-      define_singleton_method("#{key}") { find_by_key(key) }
+      define_singleton_method("#{key}") { Landlord::Role.find_by(key: key) }
     end
 
   end

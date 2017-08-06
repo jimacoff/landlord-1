@@ -14,17 +14,17 @@ module Landlord
 
     # .owner?, .admin?, etc
     Landlord::Role.keys.each_with_index do |method_name, index|
-      define_method("#{method_name}?") { role == Landlord::Role.send("#{method_name}") }
+      define_method("#{method_name}?") { self.role == Landlord::Role.send("#{method_name}") }
     end
 
     def self.add_memberships(email_addresses, role_id, account_id)
       memberships = []
 
       role = Landlord::Role.find(role_id)
-      raise "invalid role" if !role
+      raise 'invalid role' if !role
 
       account = Landlord::Account.find(account_id)
-      raise "invalid account" if !account
+      raise 'invalid account' if !account
 
       email_addresses.each do |email|
         invite_sent = false

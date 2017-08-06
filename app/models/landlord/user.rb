@@ -12,8 +12,8 @@ module Landlord
     has_many :accounts, through: :memberships
 
     def name
-      out_name = "#{first_name} #{last_name}".strip
-      out_name = email if out_name.empty?
+      out_name = "#{self.first_name} #{self.last_name}".strip
+      out_name = self.email if out_name.empty?
     end
 
     def self.init_from_google_oauth2(auth_data)

@@ -3,19 +3,19 @@
 one:
   account: accounts(:one)
   user: users(:one)
-  role: owner
+  role: roles(:owner)
 
 two:
   account: accounts(:one)
   user: users(:two)
-  role: normal
+  role: roles(:normal)
 
 three:
   account: accounts(:two)
   user: users(:two)
-  role: owner
+  role: roles(:owner)
 
 four:
   account: accounts(:two)
   user: users(:one)
-  role: normal
+  role: roles(:normal)
