@@ -4,7 +4,7 @@ module Landlord
   class Accounts::MembershipsController < ApplicationController
     before_action :require_active_account
     before_action :require_account_owner
-    before_action :set_roles
+    before_action :set_roles, only: [:index, :edit]
     before_action :set_membership, only: [:edit, :update, :destroy]
 
     # Display list of user memberships (with invite form)
@@ -49,11 +49,7 @@ module Landlord
     private
 
       def set_roles
-        @roles = [
-          { name: 'Normal', id: 'normal'},
-          { name: 'Admin', id: 'admin'},
-          { name: 'Read-only', id: 'restricted'}
-        ]
+        @roles = Role.not_owner
       end
 
       def set_membership

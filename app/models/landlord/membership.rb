@@ -2,30 +2,19 @@ module Landlord
   class Membership < ApplicationRecord
     self.table_name = 'memberships'
 
-    enum role: { normal: 0, admin: 1, owner: 2, restricted: 3 }
-
     belongs_to :account
     belongs_to :user
+    belongs_to :role
 
     accepts_nested_attributes_for :user
 
     validates :account, presence: true
     validates :user, presence: true, uniqueness: { scope: :account, message: 'already belongs to Account' }
+    validates :role, presence: true
 
-    def owner?
-      self.role == "owner"
-    end
-
-    def admin?
-      self.role == "admin"
-    end
-
-    def normal?
-      self.role == "normal"
-    end
-
-    def restricted?
-      self.role == "restricted"
+    #owner?, admin?, etc
+    Landlord::Role.keys.each_with_index do |method_name, index|
+      define_method("#{method_name}?") { role == Landlord::Role.send("#{method_name}") }
     end
 
     def self.add_memberships(email_addresses, role_id, account_id)

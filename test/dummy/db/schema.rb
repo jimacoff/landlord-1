@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160825003716) do
+ActiveRecord::Schema.define(version: 20170806182131) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name"
@@ -30,13 +30,13 @@ ActiveRecord::Schema.define(version: 20160825003716) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.integer  "account_id",             null: false
-    t.integer  "user_id",                null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "role",       default: 0
+    t.integer  "account_id", null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "role_id"
     t.index ["account_id", "user_id"], name: "index_memberships_on_account_id_and_user_id", unique: true
-    t.index ["role"], name: "index_memberships_on_role"
+    t.index ["role_id"], name: "index_memberships_on_role_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -72,6 +72,14 @@ ActiveRecord::Schema.define(version: 20160825003716) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["stripe_id"], name: "index_receipts_on_stripe_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "key"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_roles_on_key", unique: true
   end
 
   create_table "settings", force: :cascade do |t|

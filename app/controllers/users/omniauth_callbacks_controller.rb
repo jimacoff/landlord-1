@@ -4,19 +4,14 @@ module Landlord
       auth_data = request.env["omniauth.auth"]
       auth_params = request.env['omniauth.params']
 
-      from = auth_params['from']
-      if !from
-        from = 'sign_in'
-      end
+      from = auth_params['from'] ||= 'sign_in'
 
       if from == 'sign_in'
         # Callback is from sign in; lookup user and redirect
-        user = User.find_for_google_oauth2(request.env["omniauth.auth"], current_user)
+        user = User.find_for_google_oauth2(auth_data, current_user)
         if user
-          if !user.confirmed?
-            user.confirm
-          end
-          sign_in_and_redirect user, :event => :authentication
+          user.confirm unless user.confirmed?
+          sign_in_and_redirect user, event: :authentication
         else
           redirect_to new_user_session_path, notice: 'No login exists for this Google Account'
         end
@@ -32,7 +27,6 @@ module Landlord
 
           if account.save
             Landlord::AccountMailer.welcome(account).deliver_later
-
             sign_in user
             redirect_to account_path(account), notice: 'Welcome to your new account!'
           else
