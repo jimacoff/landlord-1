@@ -54,34 +54,65 @@ module Landlord
 
     # Update the account's Stipe customer object
     def update_stripe_attributes
-      if self.stripe_id && self.owner
-        customer = Stripe::Customer.retrieve(self.stripe_id)
+      if stripe_id && owner
+        customer = Stripe::Customer.retrieve(stripe_id)
         subscription = customer.subscriptions.first
 
-        customer.email = self.owner.email
-        customer.description = self.name
+        customer.email = owner.email
+        customer.description = name
         customer.save
 
-        subscription.plan = self.plan.stripe_id
+        subscription.plan = plan.stripe_id
         subscription.save
       end
     end
 
     def update_stripe_card(stripe_params)
-      customer = Stripe::Customer.retrieve(self.stripe_id)
-      subscription = customer.subscriptions.first
+      if stripe_id
+        customer = Stripe::Customer.retrieve(stripe_id)
+        subscription = customer.subscriptions.first
 
-      customer.source = stripe_params[:token]
-      customer.save
+        customer.source = stripe_params[:token]
+        customer.save
 
-      self.update(
-        status: subscription.status,
-        card_name: stripe_params[:card_name],
-        card_brand: stripe_params[:card_brand],
-        card_last4: stripe_params[:card_last4],
-        card_exp_month: stripe_params[:card_exp_month],
-        card_exp_year: stripe_params[:card_exp_year]
-      )
+        update(
+          status: subscription.status,
+          card_name: stripe_params[:card_name],
+          card_brand: stripe_params[:card_brand],
+          card_last4: stripe_params[:card_last4],
+          card_exp_month: stripe_params[:card_exp_month],
+          card_exp_year: stripe_params[:card_exp_year]
+        )
+      end
+    end
+
+    def update_settings(account_params)
+      account_update_params = account_params.except(:owner_id, :billing_address, :billing_cc_emails)
+
+      settings(:billing).address = account_params[:billing_address]
+      settings(:billing).cc_emails = account_params[:billing_cc_emails]
+
+      new_owner_id = account_params[:owner_id]
+      current_owner_id = owner.id.to_s
+
+      if new_owner_id != current_owner_id
+        new_owner_membership = memberships.find_by(user_id: new_owner_id)
+        current_owner_membership = memberships.find_by(user_id: current_owner_id)
+
+        if new_owner_membership
+          new_owner_membership.role = "owner"
+          new_owner_membership.save
+
+          current_owner_membership.role = "admin"
+          current_owner_membership.save
+
+          update_stripe_attributes
+        else
+          errors.add(:base, "No membership found for new account owner.")
+        end
+      end
+
+      update(account_update_params)
     end
 
 

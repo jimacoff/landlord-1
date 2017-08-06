@@ -18,35 +18,11 @@ module Landlord
     # Update account settings
     # PATCH/PUT /1/settings
     def update
-      current_account.name = account_params[:name]
-      current_account.plan_id = account_params[:plan_id]
-      current_account.settings(:billing).address = params[:billing_address]
-      current_account.settings(:billing).cc_emails = params[:billing_cc_emails]
-
-      owner_changed = false
-      new_owner_id = params[:owner_id]
-      current_owner_id = current_account.owner.id.to_s
-
-      if new_owner_id != current_owner_id
-        new_owner_membership = current_account.memberships.find_by(user_id: new_owner_id)
-        current_owner_membership = current_account.memberships.find_by(user_id: current_owner_id)
-
-        if new_owner_membership && current_owner_membership
-          new_owner_membership.role = "owner"
-          new_owner_membership.save
-
-          current_owner_membership.role = "admin"
-          current_owner_membership.save
-
-          owner_changed = true
-        end
-      end
-
-      if current_account.save && current_account.update_stripe_attributes
-        if !owner_changed
-          redirect_to edit_account_settings_path(@current_account), notice: 'Account was successfully updated.'
+      if current_account.update_settings(account_params)
+        if current_account.owner == current_user
+          redirect_to edit_account_settings_path(current_account), notice: 'Account was successfully updated.'
         else
-          redirect_to @current_account, notice: 'Account was successfully updated. You are no longer the Account Owner.'
+          redirect_to current_account, notice: 'Account was successfully updated. You are no longer the Account Owner.'
         end
       else
         @plans = Plan.all
@@ -57,7 +33,7 @@ module Landlord
     private
 
       def account_params
-        params.require(:account).permit(:name, :plan_id)
+        params.require(:account).permit(:name, :plan_id, :owner_id, :billing_address, :billing_cc_emails)
       end
 
   end

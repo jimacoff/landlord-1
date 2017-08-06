@@ -1,19 +1,19 @@
 <h1>Account Settings</h1>
 <p>Name, plan, billing, invoices, usage, users, cancellation</p>
 
-<% if @current_account.errors.any? %>
+<% if current_account.errors.any? %>
   <div class="error-list">
-    <h2><%= pluralize(@current_account.errors.count, "error") %> prohibited this account from being saved:</h2>
+    <h2><%= pluralize(current_account.errors.count, "error") %> prohibited this account from being saved:</h2>
 
     <ul>
-    <% @current_account.errors.full_messages.each do |message| %>
+    <% current_account.errors.full_messages.each do |message| %>
       <li><%= message %></li>
     <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_for(@current_account, url: account_settings_path) do |f| %>
+<%= form_for(current_account, url: account_settings_path) do |f| %>
   <div class="form-group">
     <%= f.label :name, "Company Name", class: 'control-label' %>
     <%= f.text_field :name, class: 'form-control js-company-name', required: true %>
@@ -25,18 +25,18 @@
   </div>
 
   <div class="form-group">
-    <%= label_tag :owner_id, "Account Owner", class: 'control-label' %>
-    <%= select_tag :owner_id, options_from_collection_for_select(@users, "id", "name", @owner_id) %>
+    <%= label_tag "account[owner_id]", "Account Owner", class: 'control-label' %>
+    <%= select_tag "account[owner_id", options_from_collection_for_select(@users, "id", "name", @owner_id) %>
   </div>
 
   <div class="form-group">
-    <%= label_tag :billing_address, "Address to display on receipts" %>
-    <%= text_area_tag :billing_address, @billing_address %>
+    <%= label_tag "account[billing_address]", "Address to display on receipts" %>
+    <%= text_area_tag "account[billing_address]", @billing_address %>
   </div>
 
   <div class="form-group">
-    <%= label_tag :billing_cc_emails, "Also send receipts to these email addresses" %>
-    <%= text_field_tag :billing_cc_emails, @billing_cc_emails %>
+    <%= label_tag "account[billing_cc_emails]", "Also send receipts to these email addresses" %>
+    <%= text_field_tag "account[billing_cc_emails]", @billing_cc_emails %>
   </div>
 
   <div class="form-group">
@@ -47,6 +47,6 @@
 <hr />
 
 <h1>Cancel your account</h1>
-<%= form_for @current_account, method: :delete do |f| %>
+<%= form_for current_account, method: :delete do |f| %>
   <%= f.submit 'Cancel my account', class: 'btn btn-primary' %>
 <% end %>
