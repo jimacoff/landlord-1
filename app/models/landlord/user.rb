@@ -13,10 +13,7 @@ module Landlord
 
     def name
       out_name = "#{first_name} #{last_name}".strip
-      if out_name.empty?
-        out_name = email
-      end
-      out_name
+      out_name = email if out_name.empty?
     end
 
     def self.init_from_google_oauth2(auth_data)
@@ -26,12 +23,12 @@ module Landlord
         uid = auth_data.uid
 
         # Find user or initialize a new one
-        user = User.where(:email => info["email"]).first
+        user = User.where(email: info['email']).first
         unless user
           user = User.new(
-            first_name: info["first_name"],
-            last_name: info["last_name"],
-            email: info["email"],
+            first_name: info['first_name'],
+            last_name: info['last_name'],
+            email: info['email'],
             password: Devise.friendly_token[0,20],
             provider: provider,
             uid: uid
@@ -47,10 +44,7 @@ module Landlord
 
     def self.find_for_google_oauth2(auth_data, signed_in_resource=nil)
       info = auth_data.info
-      provider = auth_data.provider
-      uid = auth_data.uid
-
-      user = User.where(:email => info["email"]).first
+      user = User.where(email: info['email']).first
     end
 
   end
