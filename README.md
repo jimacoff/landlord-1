@@ -11,7 +11,7 @@ Landlord is a Rails engine that provides multi-tenant functionality for your Saa
 Clone this repo, navigate to the repo root path in your terminal/command prompt, then run:
 ```bash
 $ bundle install
-$ rails db:migrate
+$ rails db:setup
 ```
 
 Update `/test/dummy/config/application.yml` with your Stripe/Google OAuth API keys:
@@ -54,15 +54,22 @@ $ bundle exec figaro install
 Setup Google OAuth2: https://github.com/zquestz/omniauth-google-oauth2
 Add your Google API keys to `config/application.yml`
 Add your Stripe API keys to `config/application.yml`
+(Note: if you wish to store your API keys elsewhere, you can safely delete `config/application.yml` and remove the figaro gem.)
 
 Then execute:
 ```bash
 $ rails landlord:install:migrations
-$ rails db:migrate
+$ rails db:setup
 $ rails landlord:fetch_stripe_plans
 ```
 
 Copy `app/views/devise` and `app/views/landlord` from the Landlord gem directory to your application's `app/views` directory
+
+## Roadmap/TODO
+* Expand Pundit authorization policies
+* Expand test coverage
+* Add dynamic role management
+* Streamline installation process
 
 ## Contributing
 Contribution directions go here.
