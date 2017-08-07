@@ -4,15 +4,14 @@
 
 <p><strong>Account nav:</strong></p>
 <ul>
-  <li><%= link_to "Profile", edit_profile_path %></li>
-  <li><%= link_to "Logout", destroy_user_session_path %></li>
-  <li><%= link_to "Accounts", authenticated_root_path %></li>
+  <% if current_membership.owner? %>
+    <li><%= link_to "Account: Settings", edit_account_settings_path(current_account) %></li>
+    <li><%= link_to "Account: Billing", edit_account_billing_path(current_account) %></li>
+    <li><%= link_to "Account: Receipts", account_receipts_path(current_account) %></li>
+    <li><%= link_to "Account: Users", account_memberships_path(current_account) %></li>
+  <% end %>
   <li><%= link_to "Account: New", new_account_path %></li>
-  <li><%= link_to "Account: Created Confirmation", account_created_path %></li>
-  <li><%= link_to "??? Account: Edit", edit_account_path(@current_account) %></li>
-  <li><%= link_to "Account: Canceled Confirmation", account_canceled_path(@current_account) %></li>
-  <li><%= link_to "Account: Billing", edit_account_billing_path(@current_account) %></li>
-  <li><%= link_to "Account: Receipts", account_receipts_path(@current_account) %></li>
-  <li><%= link_to "??? Account: Settings", edit_account_settings_path(@current_account) %></li>
-  <li><%= link_to "Account: Users", account_memberships_path(@current_account) %></li>
+  <li><%= link_to "Your Profile", edit_profile_path %></li>
+  <li><%= link_to "Your Accounts", authenticated_root_path %></li>
+  <li><%= link_to "Logout", destroy_user_session_path %></li>
 </ul>

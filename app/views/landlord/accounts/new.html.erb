@@ -20,7 +20,7 @@
 
   <div class="form-group">
     <%= f.label :plan_id, "Plan", class: 'control-label' %>
-    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+    <%= f.select :plan_id, @plans.collect {|p| [p.name, p.id]}, {}, { class: 'form-control' } %>
   </div>
 
   <%= f.fields_for(:memberships) do |m| %>
@@ -67,11 +67,11 @@
 
   <div class="form-group">
     <%= f.label :plan_id, "Plan", class: 'control-label' %>
-    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+    <%= f.select :plan_id, @plans.collect {|p| [p.name, p.id]}, {}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
-    <%= f.submit 'Sign in with Google', class: 'btn-google-signin' %>
+    <%= f.submit 'Sign in with Google', class: 'btn btn-danger btn-google-signin' %>
     <%= hidden_field_tag 'from', 'sign_up' %>
   </div>
 <% end %>

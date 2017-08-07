@@ -2,7 +2,7 @@
 <ul>
   <% @memberships.each do |m| %>
     <li>
-      <%= m.role %>: <%= m.user.name %>
+      <%= m.role.name %>: <%= m.user.name %>
       <%= link_to 'Edit', edit_account_membership_path(current_account, m) %> | 
       <%= link_to 'Delete', account_membership_path(current_account, m), method: :delete, data: { confirm: 'Are you sure?' } %>
     </li>
@@ -16,7 +16,7 @@
 
   <div class="form-group">
     <%= label_tag :role_id, "Role", class: 'control-label' %>
-    <%= select_tag :role_id, options_for_select(@roles.collect {|r| [r[:name], r[:id]]}) %>
+    <%= select_tag :role_id, options_for_select(@roles.collect {|r| [r[:name], r[:id]]}), class: 'form-control' %>
   </div>
 
   <div class="form-group">

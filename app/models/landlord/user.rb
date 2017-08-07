@@ -13,7 +13,7 @@ module Landlord
 
     def name
       out_name = "#{self.first_name} #{self.last_name}".strip
-      out_name = self.email if out_name.empty?
+      out_name.empty? ? self.email : out_name
     end
 
     def self.init_from_google_oauth2(auth_data)

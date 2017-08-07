@@ -9,32 +9,40 @@
   </head>
 
   <body>
-    <p class="left">
-      <strong>Dummy App</strong>
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary mb-5">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
       <% if current_account %>
-        &raquo; <%= link_to(current_account.name, landlord.account_path(current_account)) %>
+        <%= link_to current_account.name, landlord.account_path(current_account), class: 'navbar-brand' %>
+      <% else %>
+        <%= link_to 'Landlord Dummy App', '/', class: 'navbar-brand' %>
       <% end %>
-    </p>
 
-    <% if current_user %>
-      <p class="right">
-        <%= current_user.name %> |
-        <%= link_to('Your accounts', landlord.authenticated_root_path) %> |
-        <%= link_to('Profile', landlord.edit_profile_path) %> |
-        <%= link_to('Sign out', landlord.destroy_user_session_path) %>
-      </p>
-    <% else %>
-      <p class="right">
-        <%= link_to('Sign in', landlord.destroy_user_session_path) %> |
-        <%= link_to('Try it free', landlord.new_account_path) %>
-      </p>
-    <% end %>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+          <% if current_user %>
+            <%= link_to current_user.name, landlord.edit_profile_path, class: 'nav-item nav-link' %>
+            <%= link_to 'Your accounts', landlord.authenticated_root_path, class: 'nav-item nav-link' %>
+            <%= link_to 'Sign out', landlord.destroy_user_session_path, class: 'nav-item nav-link' %>
+          <% else %>
+            <%= link_to 'Sign in', landlord.destroy_user_session_path, class: 'nav-item nav-link' %>
+            <%= link_to 'Try it free', landlord.new_account_path, class: 'nav-item nav-link' %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
 
-    <hr class="clear" />
+    <main class="container">
+      <% if notice %>
+        <div class="alert alert-info"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-warning"><%= alert %></div>
+      <% end %>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
-    <%= yield %>
+      <%= yield %>
+    </main>
   </body>
 </html>

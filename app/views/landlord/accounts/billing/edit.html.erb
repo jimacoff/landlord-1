@@ -21,7 +21,7 @@
 <% end %>
 
 <%= form_for @current_account, url: account_billing_path, html: { id: 'payment-form' } do |f| %>
-  <div id="stripe-error" class="alert alert-danger hidden"></div>
+  <div id="stripe-error" class="alert alert-danger hidden-xs-up"></div>
 
   <input type="hidden" name="plan_id" value="<%= @current_account.plan.stripe_id %>" />
   <input type="hidden" name="email_address" value="<%= @current_account.owner.email %>" />
@@ -55,8 +55,8 @@
       <div class="form-group">
         <%= label_tag 'exp_month', 'Expiration' %>
         <div class="form-inline">
-          <%= text_field_tag 'exp_month', nil, size: 2, class: 'form-control', placeholder: 'MM', data: { stripe: 'exp-month' } %>
-          <%= text_field_tag 'exp_year', nil, size: 4, class: 'form-control', placeholder: 'YYYY', data: { stripe: 'exp-year' } %>
+          <%= text_field_tag 'exp_month', nil, size: 3, class: 'form-control', placeholder: 'MM', data: { stripe: 'exp-month' } %>
+          <%= text_field_tag 'exp_year', nil, size: 5, class: 'form-control', placeholder: 'YYYY', data: { stripe: 'exp-year' } %>
         </div>
       </div>
     </div>
@@ -83,11 +83,11 @@
 
     function stripeResponseHandler(status, response) {
       var $form = $('#payment-form');
-      $('#stripe-error').addClass('hidden');
+      $('#stripe-error').addClass('hidden-xs-up');
 
       if (response.error) {
         // Show the errors on the form
-        $('#stripe-error').text(response.error.message).removeClass('hidden');
+        $('#stripe-error').text(response.error.message).removeClass('hidden-xs-up');
         $form.find('.btn-primary').prop('disabled', false);
       } else {
         // add the Stripe response data as hidden fields (this ensures we save everything exactly as it is in Stripe)
