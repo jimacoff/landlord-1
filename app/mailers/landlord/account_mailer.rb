@@ -10,15 +10,10 @@ module Landlord
       @owner = account.owner
       @email = @owner.email
       @name = @owner.first_name
-      if !@name
-        @name = @email
-      end
+      @name = @email if @name.empty?
       @company_name = account.name
       @url = account_url(account)
-      @token = nil
-      if (!@owner.confirmed?)
-        @token = @owner.confirmation_token
-      end
+      @token = @owner.confirmed? ? nil : @owner.confirmation_token
       mail(to: @email, subject: "Welcome to your new account!")
     end
 

@@ -53,7 +53,7 @@ module Landlord
       end
 
       def set_membership
-        @membership = current_account.memberships.find_by(user_id: params[:id])
+        @membership = current_account.memberships.find(params[:id])
 
         if @membership.user_id == current_user.id
           redirect_to account_memberships_path(current_account), alert: 'Cannot edit yourself.'
@@ -63,7 +63,7 @@ module Landlord
       end
 
       def membership_params
-        params.require(:membership).permit(:role)
+        params.require(:membership).permit(:role_id)
       end
   end
 end

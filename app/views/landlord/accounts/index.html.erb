@@ -3,4 +3,5 @@
   <% @accounts.each do |account| %>
     <li><%= link_to(account.name, account_path(account)) %></li>
   <% end %>
+  <li><%= link_to "Create a New Account", new_account_path %></li>
 </ul>

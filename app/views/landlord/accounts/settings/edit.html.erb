@@ -21,22 +21,22 @@
 
   <div class="form-group">
     <%= f.label :plan_id, "Plan", class: 'control-label' %>
-    <%= f.select(:plan_id, @plans.collect {|p| [p.name, p.id]}) %>
+    <%= f.select :plan_id, @plans.collect {|p| [p.name, p.id]}, {}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
     <%= label_tag "account[owner_id]", "Account Owner", class: 'control-label' %>
-    <%= select_tag "account[owner_id", options_from_collection_for_select(@users, "id", "name", @owner_id) %>
+    <%= select_tag "account[owner_id", options_from_collection_for_select(@users, "id", "name", @owner_id), class: 'form-control' %>
   </div>
 
   <div class="form-group">
     <%= label_tag "account[billing_address]", "Address to display on receipts" %>
-    <%= text_area_tag "account[billing_address]", @billing_address %>
+    <%= text_area_tag "account[billing_address]", @billing_address, class: 'form-control' %>
   </div>
 
   <div class="form-group">
     <%= label_tag "account[billing_cc_emails]", "Also send receipts to these email addresses" %>
-    <%= text_field_tag "account[billing_cc_emails]", @billing_cc_emails %>
+    <%= text_field_tag "account[billing_cc_emails]", @billing_cc_emails, class: 'form-control' %>
   </div>
 
   <div class="form-group">
@@ -48,5 +48,5 @@
 
 <h1>Cancel your account</h1>
 <%= form_for current_account, method: :delete do |f| %>
-  <%= f.submit 'Cancel my account', class: 'btn btn-primary' %>
+  <%= f.submit 'Cancel my account', class: 'btn btn-danger' %>
 <% end %>

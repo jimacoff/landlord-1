@@ -37,9 +37,9 @@ module Landlord
         end
 
         # Add the user-account membership if it does not exist
-        membership = user.memberships.find_by(account_id: account_id)
+        membership = user.memberships.find_by(account: account)
         if !membership
-          membership = user.memberships.create(account_id: account_id, role: role_id)
+          membership = user.memberships.create(account: account, role: role)
           memberships << membership
           AccountMailer.invite(membership).deliver_later unless invite_sent
         end
