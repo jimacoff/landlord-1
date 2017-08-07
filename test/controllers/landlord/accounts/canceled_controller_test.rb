@@ -5,7 +5,7 @@ module Landlord
     include Engine.routes.url_helpers
 
     test "should get index" do
-      get accounts_canceled_index_url
+      get account_canceled_url
       assert_response :success
     end
 

@@ -20,8 +20,8 @@ module Landlord
     end
 
     test "should only allow user access with valid membership" do
-      m1 = landlord_memberships(:one)
-      m2 = landlord_memberships(:two)
+      m1 = landlord_memberships(:owner_1)
+      m2 = landlord_memberships(:owner_2)
 
       sign_in m1.user
       get account_url(m1.account)

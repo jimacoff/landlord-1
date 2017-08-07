@@ -11,3 +11,9 @@ two:
   last_name: 'Two'
   email: user2@example.com
   confirmed_at: <%= Time.now %>
+
+three:
+  first_name: 'Three'
+  last_name: 'Three'
+  email: user3@example.com
+  confirmed_at: <%= Time.now %>
