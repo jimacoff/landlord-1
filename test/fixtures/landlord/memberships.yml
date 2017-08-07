@@ -1,21 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  account: accounts(:one)
-  user: users(:one)
-  role: roles(:owner)
+  account_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  role_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
 
 two:
-  account: accounts(:one)
-  user: users(:two)
-  role: roles(:normal)
-
-three:
-  account: accounts(:two)
-  user: users(:two)
-  role: roles(:owner)
-
-four:
-  account: accounts(:two)
-  user: users(:one)
-  role: roles(:normal)
+  account_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+  role_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>

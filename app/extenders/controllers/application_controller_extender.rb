@@ -18,12 +18,13 @@
   # Require a current account and user membership
   def require_account
     get_current_account_and_membership
-    redirect_to(accounts_path) unless @current_account
+    return user_not_authorized unless @current_account
   end
 
   # Require a current active account and user membership
   def require_active_account
-    require_account
+    get_current_account_and_membership
+    return user_not_authorized unless @current_account
 
     if @current_account.billing_error?
       if @current_membership.owner?
@@ -36,9 +37,10 @@
 
   # Require a current account, and require that the current user owns it
   def require_account_owner
-    require_account
+    get_current_account_and_membership
+    return user_not_authorized unless @current_account
 
-    if !@current_membership.owner?
+    if @current_membership && !@current_membership.owner?
       redirect_to account_path(@current_account)
     end
   end
@@ -50,8 +52,8 @@
       if !@current_membership || !@current_account
         account_id = params[:account_id]
         authenticate_user! unless current_user
-        @current_membership = Landlord::Membership.find_by(user_id: current_user.id, account_id: account_id) unless !account_id
-        @current_account = @current_membership.account
+        @current_membership = Landlord::Membership.find_by(user_id: current_user.id, account_id: account_id) if account_id
+        @current_account = @current_membership.account if @current_membership
       end
     end
 
@@ -62,7 +64,7 @@
       if @current_account
         redirect_to(request.referrer || account_path(current_account))
       else
-        redirect_to(request.referrer || root_path)
+        redirect_to(request.referrer || current_user ? authenticated_root_path : unauthenticated_root_path)
       end
     end
 

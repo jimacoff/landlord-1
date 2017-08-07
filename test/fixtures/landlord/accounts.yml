@@ -2,10 +2,10 @@
 
 one:
   name: Account1
-  plan_id: 1
+  plan_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   status: active
 
 two:
   name: Account2
-  plan_id: 1
+  plan_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
   status: trialing
